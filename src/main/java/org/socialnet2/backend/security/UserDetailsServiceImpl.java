@@ -1,7 +1,7 @@
-package org.socialnetvaadin2.backend.security;
+package org.socialnet2.backend.security;
 
-import org.socialnetvaadin2.backend.entities.User;
-import org.socialnetvaadin2.backend.repositories.UserRepository;
+import org.socialnet2.backend.entities.User;
+import org.socialnet2.backend.repositories.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

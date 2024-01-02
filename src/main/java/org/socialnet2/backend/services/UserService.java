@@ -1,7 +1,7 @@
-package org.socialnetvaadin2.backend.services;
+package org.socialnet2.backend.services;
 
-import org.socialnetvaadin2.backend.entities.User;
-import org.socialnetvaadin2.backend.repositories.UserRepository;
+import org.socialnet2.backend.entities.User;
+import org.socialnet2.backend.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,7 +1,7 @@
-package org.socialnetvaadin2.backend.security;
+package org.socialnet2.backend.security;
 
-import org.socialnetvaadin2.backend.entities.User;
-import org.socialnetvaadin2.backend.repositories.UserRepository;
+import org.socialnet2.backend.entities.User;
+import org.socialnet2.backend.repositories.UserRepository;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;

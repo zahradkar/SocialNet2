@@ -1,6 +1,6 @@
-package org.socialnetvaadin2.ui.views;
+package org.socialnet2.ui.views.register;
 
-import org.socialnetvaadin2.backend.services.UserService;
+import org.socialnet2.backend.services.UserService;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;

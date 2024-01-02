@@ -1,4 +1,4 @@
-package org.socialnetvaadin2.ui.views;
+package org.socialnet2.ui.views;
 
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

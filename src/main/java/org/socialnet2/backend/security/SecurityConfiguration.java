@@ -1,6 +1,6 @@
-package org.socialnetvaadin2.backend.security;
+package org.socialnet2.backend.security;
 
-import org.socialnetvaadin2.ui.views.LoginView;
+import org.socialnet2.ui.views.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

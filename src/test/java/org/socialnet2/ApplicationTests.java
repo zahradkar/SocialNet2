@@ -1,4 +1,4 @@
-package org.socialnetvaadin2;
+package org.socialnet2;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

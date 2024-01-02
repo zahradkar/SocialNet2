@@ -1,4 +1,4 @@
-package org.socialnetvaadin2.ui.views;
+package org.socialnet2.ui.views.register;
 
 import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.button.Button;
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 public class RegistrationForm extends FormLayout {
 
-	private final TextField username = new TextField("Username");
+	private final TextField username = new TextField("Email");
 	private final PasswordField password = new PasswordField("Password");
 	private final PasswordField passwordConfirm = new PasswordField("Confirm password");
 	private final Span errorMessageField = new Span();

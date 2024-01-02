@@ -1,7 +1,7 @@
-package org.socialnetvaadin2.ui.views;
+package org.socialnet2.ui.views.register;
 
-import org.socialnetvaadin2.backend.entities.User;
-import org.socialnetvaadin2.backend.services.UserService;
+import org.socialnet2.backend.entities.User;
+import org.socialnet2.backend.services.UserService;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;

@@ -1,4 +1,4 @@
-package org.socialnetvaadin2.backend.entities;
+package org.socialnet2.backend.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
