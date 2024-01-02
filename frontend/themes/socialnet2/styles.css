@@ -1,0 +1,13 @@
+@import "theme-editor.css";
+@import url('./views/posts-view.css');
+@import url('./views/add-post-component.css');
+
+
+html {
+  background: rgba(238, 238, 238, 0.32);
+}
+
+/*
+.vaadin-button-container{
+  justify-content: left;
+}*/

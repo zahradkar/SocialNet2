@@ -39,4 +39,4 @@ out/
 
 ### moje ###
 .env
-frontend
+/src/main/resources/samplePersonData.sql

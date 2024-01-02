@@ -1,0 +1,5 @@
+/*
+ * This file has been created by the Vaadin Theme Editor. Please note that
+ * manual changes to individual CSS properties may be overwritten by the theme editor.
+ */
+vaadin-grid.layout-test3-view-grid-1::part(header-cell) { --lumo-font-size-s:var(--lumo-font-size-xl); }

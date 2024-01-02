@@ -1,6 +1,7 @@
 package org.socialnet2.backend.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Collections;
@@ -13,7 +14,8 @@ public class User {
 	@Id
 	@Column(unique = true, nullable = false)
 	@NotBlank
-	private String username;
+	@Email
+	private String username; // I was unable to rename automatically successfully this filed to email. So the name of file remained "username" but contains email
 	@NotBlank
 	private String password;
 	@Enumerated(EnumType.STRING)
