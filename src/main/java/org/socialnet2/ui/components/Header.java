@@ -8,14 +8,15 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 
-@Route("header") // TODO delete this row before deploying
 public class Header extends Composite<HorizontalLayout> {
 	// TODO in development
 	public Header() {
-		var logo = new Image("icons/logo.svg", "logo image");
-		logo.setWidth("40px"); // TODO use variable instead of magic number
+		StreamResource imageResource = new StreamResource("logo.svg", () -> getClass().getResourceAsStream("/images/logo.svg"));
+		var logoIco = new Image(imageResource, "logo image");
+//		var logo = new Image("icons/logo.svg", "logo image");
+		logoIco.setWidth("40px"); // TODO use variable instead of magic number
 
 		var loginBtn = new Button();
 		loginBtn.addThemeVariants(ButtonVariant.LUMO_ICON);
@@ -30,7 +31,7 @@ public class Header extends Composite<HorizontalLayout> {
 		getContent().setHeight("50px");
 		getContent().setAlignItems(FlexComponent.Alignment.CENTER);
 		getStyle().setBackground("white").setJustifyContent(Style.JustifyContent.SPACE_BETWEEN).set("position", "fixed").setZIndex(1).set("padding", "0 10px");
-		getContent().add(logo, new SearchBar(), loginBtn);
+		getContent().add(logoIco, new SearchBar(), loginBtn);
 	}
 
 	public String getHeight() {
