@@ -8,7 +8,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @Route("register")
 @AnonymousAllowed
-@PageTitle("Register | Vaadin library")
+@PageTitle("Register | SocialNet")
 public class RegistrationView extends VerticalLayout {
 
 	public RegistrationView(UserService userService) {

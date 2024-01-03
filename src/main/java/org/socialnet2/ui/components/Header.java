@@ -9,13 +9,14 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.server.StreamResource;
+import org.socialnet2.backend.services.UserService;
 
 public class Header extends Composite<HorizontalLayout> {
 	// TODO in development
-	public Header() {
+
+	public Header(UserService userService) {
 		StreamResource imageResource = new StreamResource("logo.svg", () -> getClass().getResourceAsStream("/images/logo.svg"));
 		var logoIco = new Image(imageResource, "logo image");
-//		var logo = new Image("icons/logo.svg", "logo image");
 		logoIco.setWidth("40px"); // TODO use variable instead of magic number
 
 		var loginBtn = new Button();
@@ -24,7 +25,7 @@ public class Header extends Composite<HorizontalLayout> {
 		loginBtn.setHeight("40px");
 		loginBtn.getStyle().setBorderRadius("50%");
 		loginBtn.setIcon(VaadinIcon.USER.create());
-		loginBtn.addClickListener(buttonClickEvent -> new LoginDialog().open());
+		loginBtn.addClickListener(buttonClickEvent -> new LoginDialog(userService).open());
 
 //		getContent().setPadding(false);
 		getContent().setWidth("100%");

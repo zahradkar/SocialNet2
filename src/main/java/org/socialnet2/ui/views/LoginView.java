@@ -1,34 +1,29 @@
 package org.socialnet2.ui.views;
 
-import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @Route("login")
-//@CssImport("./login-view.css")
-@PageTitle("Login | Vaadin library")
-public class LoginView extends Composite<Div> implements BeforeEnterObserver {
-	private final LoginOverlay loginOverlay = new LoginOverlay();
+@PageTitle("SocialNet | Login")
+@AnonymousAllowed
+public class LoginView extends LoginOverlay implements BeforeEnterObserver {
 
 	public LoginView() {
-		loginOverlay.setTitle("Vaadin's library ;)");
-		loginOverlay.setDescription("Basic CRUD ops with books example");
-		loginOverlay.setForgotPasswordButtonVisible(false);
+		setTitle("SocialNet");
+		setDescription("Welcome to best social network ever!");
 
 		var anchorReg = new Anchor("http://localhost:8080/register", "Sign up here.");
 		anchorReg.addClassName("font-weight-bold");
 
-
-		loginOverlay.getFooter().add(new Span("Don't have account? "), anchorReg);
-		getContent().add(loginOverlay);
-		loginOverlay.setOpened(true);
-		loginOverlay.setAction("login");
+		getFooter().add(new Span("Don't have account? "), anchorReg);
+		setOpened(true);
+		setAction("login");
 	}
 
 	@Override
@@ -37,7 +32,7 @@ public class LoginView extends Composite<Div> implements BeforeEnterObserver {
 				.getQueryParameters()
 				.getParameters()
 				.containsKey("error")) {
-			loginOverlay.setError(true);
+			this.setError(true);
 		}
 	}
 }

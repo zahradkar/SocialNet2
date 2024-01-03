@@ -18,11 +18,11 @@ public class UserService {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	public void add(String username, String password) {
-		if (userRepository.existsUsersByUsername(username))
-			throw new IllegalArgumentException("Username already exists");
+	public void add(String email, String password) {
+		if (userRepository.existsUsersByUsername(email))
+			throw new IllegalArgumentException("E-mail already exists");
 
-		userRepository.save(new User(username, passwordEncoder.encode(password)));
-		logger.info("User " + username + " stored in the database!");
+		userRepository.save(new User(email, passwordEncoder.encode(password)));
+		logger.info("User " + email + " stored in the database!");
 	}
 }

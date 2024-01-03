@@ -25,8 +25,9 @@ public class RegistrationForm extends FormLayout {
 
 		submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-		H3 title = new H3("Signup form");
-		add(title, username, password, passwordConfirm, errorMessageField, submitButton, new Anchor("http://localhost:8080/login", "Login"));
+		H3 title = new H3("Sign up");
+		add(title, username, password, passwordConfirm, errorMessageField, submitButton);
+//		add(title, username, password, passwordConfirm, errorMessageField, submitButton, new Anchor("http://localhost:8080/login", "Login"));
 
 		// Max width of the Form
 		setMaxWidth("500px");
