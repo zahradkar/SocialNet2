@@ -67,5 +67,5 @@
 .posts-view .shares {
   color: var(--lumo-tertiary-text-color);
   font-size: var(--lumo-font-size-xs);
-  margin-right: var(--lumo-space-l);
+  /*margin-right: var(--lumo-space-l);*/
 }

@@ -2,10 +2,8 @@ package org.socialnet2.ui.containers.components;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -14,13 +12,13 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @Route("votes")
 @PageTitle("SocialNet | vote component presentation")
 @AnonymousAllowed
-public class Vote extends HorizontalLayout {
-	public Vote() {
+public class VoteComponent extends HorizontalLayout {
+	public VoteComponent() {
 		var upvoteIco = VaadinIcon.THUMBS_UP.create();
-		upvoteIco.addClassNames("vote-icon", "voteup");
+		upvoteIco.addClassName("vote-icon");
 		var upvoteBtn = new Button(upvoteIco);
 		upvoteBtn.addThemeVariants(ButtonVariant.LUMO_ICON);
-		upvoteBtn.addClassName("vote-button");
+		upvoteBtn.addClassName("media-object-button");
 //		upvoteBtn.setWidth("40px");
 //		upvoteBtn.setHeight("40px");
 //		upvoteBtn.getStyle().setBorderRadius("50%");
@@ -28,12 +26,13 @@ public class Vote extends HorizontalLayout {
 //		upvoteBtn.getStyle().setMargin("0");
 
 		var downvoteIco = VaadinIcon.THUMBS_DOWN.create();
-		downvoteIco.addClassNames("vote-icon", "votedown");
+		downvoteIco.addClassName("vote-icon");
 		var downvoteBtn = new Button(downvoteIco);
-		downvoteBtn.addClassName("vote-button");
+		downvoteBtn.addClassName("media-object-button");
 //		downvoteBtn.setIcon(VaadinIcon.THUMBS_DOWN.create());
 
 		var votes = new Span("10k");
+		votes.addClassName("likes"); // TODO i don't like this
 		setAlignItems(Alignment.CENTER);
 //		setJustifyContentMode(JustifyContentMode.CENTER);
 

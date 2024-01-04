@@ -7,10 +7,11 @@ html {
   background: rgba(238, 238, 238, 0.32);
 }
 
-.votes {
-  /*background: rgba(255, 99, 71, 0.3);*/
-  border: 1px solid rgba(0, 0, 0, 0.09);
+.votes,
+.komentare {
+  gap: 0;
 }
+
 
 /*.votes > button {*/
 /*  width: 40px;*/
@@ -20,22 +21,24 @@ html {
 /*  margin: 0;*/
 /*}*/
 
-.vote-button {
+.media-object-button {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   padding: 0;
   margin: 0;
+  background: initial;
 }
 
 .vote-icon {
   fill: #8892a0;
 }
 
+/*
 .voteup:hover {
   fill: #1be11b;
 }
 
 .votedown:hover {
   fill: red;
-}
+}*/

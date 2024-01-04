@@ -40,7 +40,7 @@ public class MediaObject extends HorizontalLayout {
 		HorizontalLayout actions = new HorizontalLayout();
 		actions.addClassName("actions");
 		actions.setSpacing(false);
-		actions.getThemeList().add("spacing-s");
+		actions.getThemeList().add("spacing-l");
 
 		Icon likeIcon = VaadinIcon.HEART.create();
 		likeIcon.addClassName("icon");
@@ -60,7 +60,7 @@ public class MediaObject extends HorizontalLayout {
 		Span shares = new Span(person.shares());
 		shares.addClassName("shares");
 
-		actions.add(new Vote(), commentIcon, comments, shareIcon, shares);
+		actions.add(new VoteComponent(), new CommentComponent(person.comments()), shareIcon, shares);
 //		actions.add(likeIcon, likes, commentIcon, comments, shareIcon, shares);
 
 		description.add(header, post, actions);
