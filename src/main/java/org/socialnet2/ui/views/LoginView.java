@@ -18,7 +18,7 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
 		setTitle("SocialNet");
 		setDescription("Welcome to best social network ever!");
 
-		var anchorReg = new Anchor("http://localhost:8080/register", "Sign up here.");
+		var anchorReg = new Anchor("http://localhost:8081/register", "Sign up here."); // TODO read port number from variable instead of using hardcoded
 		anchorReg.addClassName("font-weight-bold");
 
 		getFooter().add(new Span("Don't have account? "), anchorReg);

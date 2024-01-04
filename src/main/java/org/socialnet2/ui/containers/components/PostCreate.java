@@ -1,13 +1,13 @@
-package org.socialnet2.ui.components;
+package org.socialnet2.ui.containers.components;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
-import org.socialnet2.ui.views.posts.PresentationPosts;
+import org.socialnet2.ui.views.posts.PresentationPostsView;
 
-public class AddPostComponent extends HorizontalLayout {
-	public AddPostComponent() {
+public class PostCreate extends HorizontalLayout {
+	public PostCreate() {
 		// TODO update units (do not use magic numbers)
 		addClassName("add-post-component");
 		getStyle().setAlignItems(Style.AlignItems.CENTER);
@@ -18,7 +18,7 @@ public class AddPostComponent extends HorizontalLayout {
 		getStyle().setBorderRadius("30px");
 		getStyle().setPadding("0 10px");
 //		getStyle().setBoxSizing(Style.BoxSizing.BORDER_BOX);
-		Image profilePicture = new Image(PresentationPosts.persons.get(5).getImage(), "profile picture"); // TODO update number to be random from list range
+		Image profilePicture = new Image(PresentationPostsView.persons.get(5).image(), "profile picture"); // TODO update number to be random from list range
 		profilePicture.setHeight("var(--lumo-size-l)");
 		profilePicture.setWidth("var(--lumo-size-l)");
 		profilePicture.getStyle().setBorderRadius("50%");
@@ -29,7 +29,7 @@ public class AddPostComponent extends HorizontalLayout {
 //		var newPostWindow = new Dialog();
 //		newPostWindow.add(new H2("New post"));
 //		newPostWindow.add(new Span("bla bla bla"));
-		addPostBtn.addClickListener(buttonClickEvent -> new NewPost().open());
+		addPostBtn.addClickListener(buttonClickEvent -> new PostNew().open());
 		add(addPostBtn);
 	}
 }

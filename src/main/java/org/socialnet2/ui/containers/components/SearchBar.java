@@ -1,4 +1,4 @@
-package org.socialnet2.ui.components;
+package org.socialnet2.ui.containers.components;
 
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Input;

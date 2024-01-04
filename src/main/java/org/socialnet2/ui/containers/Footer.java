@@ -1,4 +1,4 @@
-package org.socialnet2.ui.components;
+package org.socialnet2.ui.containers;
 
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;

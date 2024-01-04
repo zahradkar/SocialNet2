@@ -1,4 +1,4 @@
-package org.socialnet2.ui.components;
+package org.socialnet2.ui.containers;
 
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
@@ -10,6 +10,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.server.StreamResource;
 import org.socialnet2.backend.services.UserService;
+import org.socialnet2.ui.containers.components.LoginDialog;
+import org.socialnet2.ui.containers.components.SearchBar;
 
 public class Header extends Composite<HorizontalLayout> {
 	// TODO in development

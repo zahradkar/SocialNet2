@@ -8,9 +8,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.socialnet2.backend.services.UserService;
-import org.socialnet2.ui.components.Footer;
-import org.socialnet2.ui.components.Header;
-import org.socialnet2.ui.components.MainContainer;
+import org.socialnet2.ui.containers.Footer;
+import org.socialnet2.ui.containers.Header;
+import org.socialnet2.ui.containers.MainContainer;
 
 @PageTitle("SocialNet")
 @Route(value = "")
@@ -18,11 +18,14 @@ import org.socialnet2.ui.components.MainContainer;
 @AnonymousAllowed
 public class MainView extends Composite<VerticalLayout> {
 	public MainView(UserService userService) {
+		addClassName("posts-view");
+
 		var header = new Header(userService);
 		var main = new MainContainer();
 		var footer = new Footer();
 
 		main.getStyle().setMarginTop(header.getHeight());
+		header.getStyle().setTop("0");
 
 		getContent().setWidth("100%");
 		getContent().setPadding(false);
