@@ -9,7 +9,8 @@ html {
 
 .votes,
 .komentare,
-.shares {
+.shares,
+.media-object__options {
     gap: 0;
 }
 
@@ -22,7 +23,7 @@ html {
 /*  margin: 0;*/
 /*}*/
 
-.media-object-button {
+.media-object__button {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -31,7 +32,7 @@ html {
     background: initial;
 }
 
-.vote-icon {
+.media-object__icon {
     fill: #8892a0;
 }
 
