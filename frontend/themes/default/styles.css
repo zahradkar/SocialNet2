@@ -4,12 +4,13 @@
 
 
 html {
-  background: rgba(238, 238, 238, 0.32);
+    background: rgba(238, 238, 238, 0.32);
 }
 
 .votes,
-.komentare {
-  gap: 0;
+.komentare,
+.shares {
+    gap: 0;
 }
 
 
@@ -22,16 +23,16 @@ html {
 /*}*/
 
 .media-object-button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  padding: 0;
-  margin: 0;
-  background: initial;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0;
+    background: initial;
 }
 
 .vote-icon {
-  fill: #8892a0;
+    fill: #8892a0;
 }
 
 /*

@@ -60,7 +60,7 @@ public class MediaObject extends HorizontalLayout {
 		Span shares = new Span(person.shares());
 		shares.addClassName("shares");
 
-		actions.add(new VoteComponent(), new CommentComponent(person.comments()), shareIcon, shares);
+		actions.add(new VoteComponent(), new CommentComponent(person.comments()), new ShareComponent());
 //		actions.add(likeIcon, likes, commentIcon, comments, shareIcon, shares);
 
 		description.add(header, post, actions);
