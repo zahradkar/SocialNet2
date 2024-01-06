@@ -61,9 +61,9 @@ public class MediaObject extends HorizontalLayout {
         shares.addClassName("shares");
 
         actions.add(
-                new VotesComponent(VaadinIcon.THUMBS_UP.create(), VaadinIcon.THUMBS_DOWN.create(), "10k"),
-                new CommentComponent(VaadinIcon.COMMENT.create(), "21"), // TODO update number accordingly
-                new SharesComponent(VaadinIcon.CONNECT.create(), "11") // TODO update number accordingly
+                new VotesComponent(VaadinIcon.THUMBS_UP.create(), VaadinIcon.THUMBS_DOWN.create(), person.likes()),
+                new CommentComponent(VaadinIcon.COMMENT.create(), person.comments()),
+                new SharesComponent(VaadinIcon.CONNECT.create(), person.shares())
         );
 //		actions.add(likeIcon, likes, commentIcon, comments, shareIcon, shares);
 
