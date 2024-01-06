@@ -9,7 +9,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.socialnet2.ui.containers.components.PostCreate;
 import org.socialnet2.ui.views.posts.PresentationPostsView;
 
-@Route("main")
+//@Route("main")
 public class MainContainer extends Composite<HorizontalLayout> {
 	//  TODO class in development
 	public static MainContainer instance;

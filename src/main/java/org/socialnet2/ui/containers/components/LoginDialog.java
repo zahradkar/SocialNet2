@@ -2,15 +2,12 @@ package org.socialnet2.ui.containers.components;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
 import org.socialnet2.backend.services.UserService;
 import org.socialnet2.ui.views.register.RegistrationForm;
 import org.socialnet2.ui.views.register.RegistrationFormBinder;
-import org.springframework.stereotype.Component;
 
-@Component
 public class LoginDialog extends Dialog {
 	public LoginDialog(UserService userService) {
 		var i18n = LoginI18n.createDefault();

@@ -7,9 +7,6 @@ html {
     background: rgba(238, 238, 238, 0.32);
 }
 
-.votes,
-.komentare,
-.shares,
 .media-object__options {
     gap: 0;
 }
