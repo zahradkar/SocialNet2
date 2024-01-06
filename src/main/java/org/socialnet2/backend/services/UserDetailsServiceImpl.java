@@ -1,4 +1,4 @@
-package org.socialnet2.backend.security;
+package org.socialnet2.backend.services;
 
 import org.socialnet2.backend.entities.User;
 import org.socialnet2.backend.repositories.UserRepository;
@@ -29,10 +29,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	@Transactional
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username);
-		if (user == null)
-			throw new UsernameNotFoundException("No user present with username: " + username);
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		var user = userRepository.getReferenceById(email);
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthorities(user));
 	}
 }

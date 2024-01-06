@@ -19,7 +19,7 @@ public class UserService {
 	}
 
 	public void add(String email, String password) {
-		if (userRepository.existsUsersByUsername(email))
+		if (userRepository.existsById(email))
 			throw new IllegalArgumentException("E-mail already exists");
 
 		userRepository.save(new User(email, passwordEncoder.encode(password)));
