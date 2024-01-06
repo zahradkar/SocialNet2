@@ -13,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
+@Deprecated // no usage (all code copied to UserService; just need to test UserService before deleting this class)
 public class UserDetailsServiceImpl implements UserDetailsService {
 	private final UserRepository userRepository;
 

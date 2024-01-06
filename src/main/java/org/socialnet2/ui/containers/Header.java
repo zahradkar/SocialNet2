@@ -5,6 +5,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
@@ -27,7 +28,7 @@ public class Header extends Composite<HorizontalLayout> {
 		loginBtn.setHeight("40px");
 		loginBtn.getStyle().setBorderRadius("50%");
 		loginBtn.setIcon(VaadinIcon.USER.create());
-		loginBtn.addClickListener(buttonClickEvent -> new LoginDialog(userService).open());
+		loginBtn.addClickListener(buttonClickEvent -> loginAndRegister(userService));
 
 //		getContent().setPadding(false);
 		getContent().setWidth("100%");
@@ -39,5 +40,13 @@ public class Header extends Composite<HorizontalLayout> {
 
 	public String getHeight() {
 		return this.getContent().getHeight();
+	}
+
+	private void loginAndRegister(UserService service) {
+		if (service.getAuthenticatedUser().isEmpty())
+			new LoginDialog(service).open();
+		else
+			Notification.show("Already logged in!");
+		// TODO complete
 	}
 }

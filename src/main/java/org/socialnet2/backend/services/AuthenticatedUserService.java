@@ -9,7 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Service
+//@Service
+@Deprecated // no usage (all code copied to UserService; just need to test UserService before deleting this class)
 public class AuthenticatedUserService {
 
 	private final UserRepository userRepository;

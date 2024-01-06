@@ -1,9 +1,12 @@
 package org.socialnet2.ui.containers.components;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
+import com.vaadin.flow.server.VaadinSession;
 import org.socialnet2.ui.views.posts.PresentationPostsView;
 
 public class PostCreate extends HorizontalLayout {
@@ -17,7 +20,6 @@ public class PostCreate extends HorizontalLayout {
 		getStyle().setBackground("white");
 		getStyle().setBorderRadius("30px");
 		getStyle().setPadding("0 10px");
-//		getStyle().setBoxSizing(Style.BoxSizing.BORDER_BOX);
 		Image profilePicture = new Image(PresentationPostsView.persons.get(5).image(), "profile picture"); // TODO update number to be random from list range
 		profilePicture.setHeight("var(--lumo-size-l)");
 		profilePicture.setWidth("var(--lumo-size-l)");
@@ -26,10 +28,43 @@ public class PostCreate extends HorizontalLayout {
 
 		var addPostBtn = new Button("Post...");
 		addPostBtn.addClassName("add-post__button");
-//		var newPostWindow = new Dialog();
-//		newPostWindow.add(new H2("New post"));
-//		newPostWindow.add(new Span("bla bla bla"));
-		addPostBtn.addClickListener(buttonClickEvent -> new PostNew().open());
+		addPostBtn.addClickListener(buttonClickEvent -> {
+			// TODO check if user is logged in
+
+
+
+			// Example of checking login state in a Vaadin view
+			VaadinSession vaadinSession = VaadinSession.getCurrent();
+			boolean isLoggedIn = vaadinSession.getAttribute("isLoggedIn") != null && (boolean) vaadinSession.getAttribute("isLoggedIn");
+
+			if (isLoggedIn) {
+				// User is logged in, show authenticated content
+				Notification.show("Niekto je prihlaseny");
+			} else {
+				// User is not logged in, redirect to login page
+				Notification.show("Nikto nie je prihlaseny!");
+//				UI.getCurrent().getPage().setLocation("/login");
+			}
+
+
+
+
+
+
+//			var session = VaadinSession.getCurrent();
+//			try {
+//				Notification.show(session.getAttribute("username").toString());
+//			} catch (Exception exception) {
+//				Notification.show("Asi nie je prihlaseny nikto");
+//			}
+//			Notification.show(session.toString());
+//			Notification.show(session.getBrowser().getAddress());
+//			if (session.toString() == null)
+//				Notification.show("Nikto nie je prihlaseny!");
+//			else
+//				Notification.show("Niekto je prihlaseny");
+//			new PostNew().open();
+		});
 		add(addPostBtn);
 	}
 }
