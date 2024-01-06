@@ -36,7 +36,7 @@ public class RegistrationFormBinder {
 			binder.writeBeanIfValid(userBean); // Run validators and write the values to the bean
 
 			try {
-				userService.add(userBean.getUsername(), userBean.getPassword());
+				userService.add(userBean.getEmail(), userBean.getPassword());
 				showSuccess(userBean);
 			} catch (Exception e) {
 				showFail(e.getMessage());
@@ -65,7 +65,7 @@ public class RegistrationFormBinder {
 	}
 
 	private void showSuccess(User userBean) { //We call this method when form submission has succeeded
-		Notification notification = Notification.show("Data saved, welcome " + userBean.getUsername());
+		Notification notification = Notification.show("Data saved, welcome " + userBean.getEmail());
 		notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 		// TODO redirect the user to another view
 	}

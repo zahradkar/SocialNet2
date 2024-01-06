@@ -47,6 +47,6 @@ public class Header extends Composite<HorizontalLayout> {
 			new LoginDialog(service).open();
 		else
 			Notification.show("Already logged in!");
-		// TODO complete
+		// TODO complete. it seems that user stays logged in even after restart of the app
 	}
 }

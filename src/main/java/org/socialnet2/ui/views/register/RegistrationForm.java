@@ -4,7 +4,6 @@ import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -14,7 +13,7 @@ import java.util.stream.Stream;
 
 public class RegistrationForm extends FormLayout {
 
-	private final TextField username = new TextField("Email");
+	private final TextField email = new TextField("Email");
 	private final PasswordField password = new PasswordField("Password");
 	private final PasswordField passwordConfirm = new PasswordField("Confirm password");
 	private final Span errorMessageField = new Span();
@@ -26,8 +25,7 @@ public class RegistrationForm extends FormLayout {
 		submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
 		H3 title = new H3("Sign up");
-		add(title, username, password, passwordConfirm, errorMessageField, submitButton);
-//		add(title, username, password, passwordConfirm, errorMessageField, submitButton, new Anchor("http://localhost:8080/login", "Login"));
+		add(title, email, password, passwordConfirm, errorMessageField, submitButton);
 
 		// Max width of the Form
 		setMaxWidth("500px");
@@ -35,13 +33,13 @@ public class RegistrationForm extends FormLayout {
 		setResponsiveSteps(new ResponsiveStep("0", 1, ResponsiveStep.LabelsPosition.TOP), new ResponsiveStep("490px", 2, ResponsiveStep.LabelsPosition.TOP));
 
 		setColspan(title, 2);
-		setColspan(username, 2);
+		setColspan(email, 2);
 		setColspan(errorMessageField, 2);
 		setColspan(submitButton, 2);
 	}
 
-	public TextField getUsername() {
-		return username;
+	public TextField getEmail() {
+		return email;
 	}
 
 	public PasswordField getPasswordField() {

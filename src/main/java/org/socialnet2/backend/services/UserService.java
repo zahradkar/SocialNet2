@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +41,7 @@ public class UserService implements UserDetailsService {
 			throw new IllegalArgumentException("E-mail already exists");
 
 		userRepository.save(new User(email, passwordEncoder.encode(password)));
-		logger.info("User " + email + " stored in the database!");
+		logger.info("User with e-mail " + email + " stored in the database!");
 	}
 
 	@Transactional
@@ -56,8 +55,8 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	@Transactional
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String email) {
 		var user = userRepository.getReferenceById(email);
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthorities(user));
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthorities(user));
 	}
 }

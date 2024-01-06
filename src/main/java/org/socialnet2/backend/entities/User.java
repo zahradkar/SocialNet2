@@ -14,16 +14,17 @@ public class User {
 	@Id
 	@Column(unique = true, nullable = false)
 	@NotBlank
-	@Email
-	private String username; // I was unable to rename automatically successfully this filed to email. So the name of file remained "username" but contains email
+	@Email // TODO consider improving e-mail validation; The current one is weird (e. g. a@a is allowed)
+//	@Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$",message = "Incorrect format of e-mail address!")
+	private String email;
 	@NotBlank
 	private String password;
 	@Enumerated(EnumType.STRING)
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<Role> roles = new HashSet<>(Collections.singletonList(Role.USER));
 
-	public User(String username, String password) {
-		this.username = username;
+	public User(String email, String password) {
+		this.email = email;
 		this.password = password;
 	}
 
@@ -39,12 +40,12 @@ public class User {
 		this.roles = roles;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
