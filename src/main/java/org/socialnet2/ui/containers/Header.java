@@ -13,11 +13,11 @@ import com.vaadin.flow.server.StreamResource;
 import org.socialnet2.backend.services.UserService;
 import org.socialnet2.ui.containers.components.LoginDialog;
 import org.socialnet2.ui.containers.components.SearchBar;
+import org.socialnet2.ui.views.MainView;
 
 public class Header extends Composite<HorizontalLayout> {
-	// TODO in development
 
-	public Header(UserService userService) {
+	public Header() {
 		StreamResource imageResource = new StreamResource("logo.svg", () -> getClass().getResourceAsStream("/images/logo.svg"));
 		var logoIco = new Image(imageResource, "logo image");
 		logoIco.setWidth("40px"); // TODO use variable instead of magic number
@@ -28,9 +28,8 @@ public class Header extends Composite<HorizontalLayout> {
 		loginBtn.setHeight("40px");
 		loginBtn.getStyle().setBorderRadius("50%");
 		loginBtn.setIcon(VaadinIcon.USER.create());
-		loginBtn.addClickListener(buttonClickEvent -> loginAndRegister(userService));
+		loginBtn.addClickListener(buttonClickEvent -> loginAndRegister());
 
-//		getContent().setPadding(false);
 		getContent().setWidth("100%");
 		getContent().setHeight("50px");
 		getContent().setAlignItems(FlexComponent.Alignment.CENTER);
@@ -42,9 +41,9 @@ public class Header extends Composite<HorizontalLayout> {
 		return this.getContent().getHeight();
 	}
 
-	private void loginAndRegister(UserService service) {
-		if (service.getAuthenticatedUser().isEmpty())
-			new LoginDialog(service).open();
+	private void loginAndRegister() {
+		if (MainView.userService.getAuthenticatedUser().isEmpty())
+			new LoginDialog().open();
 		else
 			Notification.show("Already logged in!");
 		// TODO complete. it seems that user stays logged in even after restart of the app

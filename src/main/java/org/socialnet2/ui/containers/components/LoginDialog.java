@@ -9,7 +9,7 @@ import org.socialnet2.ui.views.register.RegistrationForm;
 import org.socialnet2.ui.views.register.RegistrationFormBinder;
 
 public class LoginDialog extends Dialog {
-	public LoginDialog(UserService userService) {
+	public LoginDialog() {
 		var i18n = LoginI18n.createDefault();
 		i18n.getForm().setUsername("E-mail");
 		i18n.getErrorMessage().setUsername("E-mail is required!");
@@ -44,7 +44,7 @@ public class LoginDialog extends Dialog {
 
 		getFooter().add(registerBtn);
 
-		RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registerForm, userService);
+		RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registerForm);
 		registrationFormBinder.addBindingAndValidation();
 	}
 

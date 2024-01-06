@@ -4,14 +4,13 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import org.socialnet2.backend.services.UserService;
 import org.socialnet2.ui.containers.components.PostCreate;
-import org.socialnet2.ui.views.posts.PresentationPostsView;
+import org.socialnet2.ui.containers.components.PresentationPostsView;
 
 //@Route("main")
 public class MainContainer extends Composite<HorizontalLayout> {
-	//  TODO class in development
 	public static MainContainer instance;
 		VerticalLayout leftSidebar;
 		VerticalLayout mainColumn;
@@ -34,7 +33,11 @@ public class MainContainer extends Composite<HorizontalLayout> {
 
 		rightSidebar.setWidth("min-content");
 		rightSidebar.getStyle().set("flex-grow", "1");
-		mainColumn.add(new PostCreate(), new PresentationPostsView());
+		mainColumn.add(
+				new PostCreate(),
+				//  TODO here put posts stored in DB
+				new PresentationPostsView()
+		);
 
 		addClassName(LumoUtility.Gap.MEDIUM);
 		getContent().setWidth("100%");

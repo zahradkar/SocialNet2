@@ -1,13 +1,11 @@
 package org.socialnet2.ui.containers.components;
 
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
-import com.vaadin.flow.server.VaadinSession;
-import org.socialnet2.ui.views.posts.PresentationPostsView;
+import org.socialnet2.backend.services.UserService;
+import org.socialnet2.ui.views.MainView;
 
 public class PostCreate extends HorizontalLayout {
 	public PostCreate() {
@@ -20,7 +18,7 @@ public class PostCreate extends HorizontalLayout {
 		getStyle().setBackground("white");
 		getStyle().setBorderRadius("30px");
 		getStyle().setPadding("0 10px");
-		Image profilePicture = new Image(PresentationPostsView.persons.get(5).image(), "profile picture"); // TODO update number to be random from list range
+		Image profilePicture = new Image(PresentationPostsView.postData.get(5).image(), "profile picture"); // TODO update number to be random from list range
 		profilePicture.setHeight("var(--lumo-size-l)");
 		profilePicture.setWidth("var(--lumo-size-l)");
 		profilePicture.getStyle().setBorderRadius("50%");
@@ -31,39 +29,13 @@ public class PostCreate extends HorizontalLayout {
 		addPostBtn.addClickListener(buttonClickEvent -> {
 			// TODO check if user is logged in
 
+			if (MainView.userService.getAuthenticatedUser().isEmpty())
+				new LoginDialog().open();
+			else
+				new PostNew().open();
+//				Notification.show("Already logged in!");
 
 
-			// Example of checking login state in a Vaadin view
-			VaadinSession vaadinSession = VaadinSession.getCurrent();
-			boolean isLoggedIn = vaadinSession.getAttribute("isLoggedIn") != null && (boolean) vaadinSession.getAttribute("isLoggedIn");
-
-			if (isLoggedIn) {
-				// User is logged in, show authenticated content
-				Notification.show("Niekto je prihlaseny");
-			} else {
-				// User is not logged in, redirect to login page
-				Notification.show("Nikto nie je prihlaseny!");
-//				UI.getCurrent().getPage().setLocation("/login");
-			}
-
-
-
-
-
-
-//			var session = VaadinSession.getCurrent();
-//			try {
-//				Notification.show(session.getAttribute("username").toString());
-//			} catch (Exception exception) {
-//				Notification.show("Asi nie je prihlaseny nikto");
-//			}
-//			Notification.show(session.toString());
-//			Notification.show(session.getBrowser().getAddress());
-//			if (session.toString() == null)
-//				Notification.show("Nikto nie je prihlaseny!");
-//			else
-//				Notification.show("Niekto je prihlaseny");
-//			new PostNew().open();
 		});
 		add(addPostBtn);
 	}

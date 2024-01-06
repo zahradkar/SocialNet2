@@ -11,7 +11,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @PageTitle("Register | SocialNet")
 public class RegistrationView extends VerticalLayout {
 
-	public RegistrationView(UserService userService) {
+	public RegistrationView() {
 		RegistrationForm registrationForm = new RegistrationForm();
 		// Center the RegistrationForm
 		setSizeFull();
@@ -20,7 +20,7 @@ public class RegistrationView extends VerticalLayout {
 
 		add(registrationForm);
 
-		RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registrationForm, userService);
+		RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registrationForm);
 		registrationFormBinder.addBindingAndValidation();
 	}
 }

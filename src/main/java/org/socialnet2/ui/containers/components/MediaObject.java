@@ -6,15 +6,15 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import org.socialnet2.ui.views.posts.Person;
+import org.socialnet2.backend.records.PostData;
 
 public class MediaObject extends HorizontalLayout {
-    public MediaObject(Person person) {
+    public MediaObject(PostData postData) {
         addClassName("card");
         setSpacing(false);
         getThemeList().add("spacing-s");
 
-        Image image = new Image(person.image(), "profile picture");
+        Image image = new Image(postData.image(), "profile picture");
 
         VerticalLayout description = new VerticalLayout();
         description.addClassName("description");
@@ -26,15 +26,15 @@ public class MediaObject extends HorizontalLayout {
         header.setSpacing(false);
         header.getThemeList().add("spacing-s");
 
-        Span name = new Span(person.name());
+        Span name = new Span(postData.name());
         name.addClassName("name");
 
-        Span date = new Span(person.date());
+        Span date = new Span(postData.date());
         date.addClassName("date");
 
         header.add(name, date);
 
-        Span post = new Span(person.post());
+        Span post = new Span(postData.content());
         post.addClassName("post");
 
         HorizontalLayout actions = new HorizontalLayout();
@@ -45,25 +45,25 @@ public class MediaObject extends HorizontalLayout {
         Icon likeIcon = VaadinIcon.HEART.create();
         likeIcon.addClassName("icon");
 
-        Span likes = new Span(person.likes());
+        Span likes = new Span(postData.likes());
         likes.addClassName("likes");
 
         Icon commentIcon = VaadinIcon.COMMENT.create();
         commentIcon.addClassName("icon");
 
-        Span comments = new Span(person.comments());
+        Span comments = new Span(postData.comments());
         comments.addClassName("comments");
 
         Icon shareIcon = VaadinIcon.CONNECT.create();
         shareIcon.addClassName("icon");
 
-        Span shares = new Span(person.shares());
+        Span shares = new Span(postData.shares());
         shares.addClassName("shares");
 
         actions.add(
-                new VotesComponent(VaadinIcon.THUMBS_UP.create(), VaadinIcon.THUMBS_DOWN.create(), person.likes()),
-                new CommentComponent(VaadinIcon.COMMENT.create(), person.comments()),
-                new SharesComponent(VaadinIcon.CONNECT.create(), person.shares())
+                new VotesComponent(VaadinIcon.THUMBS_UP.create(), VaadinIcon.THUMBS_DOWN.create(), postData.likes()),
+                new CommentComponent(VaadinIcon.COMMENT.create(), postData.comments()),
+                new SharesComponent(VaadinIcon.CONNECT.create(), postData.shares())
         );
 //		actions.add(likeIcon, likes, commentIcon, comments, shareIcon, shares);
 

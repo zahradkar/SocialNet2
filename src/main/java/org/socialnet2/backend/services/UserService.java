@@ -42,6 +42,7 @@ public class UserService implements UserDetailsService {
 
 		userRepository.save(new User(email, passwordEncoder.encode(password)));
 		logger.info("User with e-mail " + email + " stored in the database!");
+//		logger.info(String.format("User with e-mail %s stored in the database!", email));
 	}
 
 	@Transactional

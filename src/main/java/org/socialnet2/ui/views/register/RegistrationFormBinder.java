@@ -7,15 +7,14 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
+import org.socialnet2.ui.views.MainView;
 
 public class RegistrationFormBinder {
-	private final UserService userService;
 	private final RegistrationForm registrationForm;
 	private boolean enablePasswordValidation; // Flag for disabling first run for password validation
 
-	public RegistrationFormBinder(RegistrationForm registrationForm, UserService userService) {
+	public RegistrationFormBinder(RegistrationForm registrationForm) {
 		this.registrationForm = registrationForm;
-		this.userService = userService;
 	}
 
 	public void addBindingAndValidation() { //Method to add the data binding and validation logics to the registration form
@@ -36,7 +35,7 @@ public class RegistrationFormBinder {
 			binder.writeBeanIfValid(userBean); // Run validators and write the values to the bean
 
 			try {
-				userService.add(userBean.getEmail(), userBean.getPassword());
+				MainView.userService.add(userBean.getEmail(), userBean.getPassword());
 				showSuccess(userBean);
 			} catch (Exception e) {
 				showFail(e.getMessage());
