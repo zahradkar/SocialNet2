@@ -5,16 +5,25 @@ import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import org.socialnet2.backend.services.UserService;
+import org.socialnet2.backend.entities.Post;
+import org.socialnet2.backend.records.PostData;
+import org.socialnet2.ui.containers.components.MediaObject;
 import org.socialnet2.ui.containers.components.PostCreate;
 import org.socialnet2.ui.containers.components.PresentationPostsView;
+import org.socialnet2.ui.views.MainView;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 //@Route("main")
 public class MainContainer extends Composite<HorizontalLayout> {
 	public static MainContainer instance;
-		VerticalLayout leftSidebar;
-		VerticalLayout mainColumn;
-		VerticalLayout rightSidebar;
+	VerticalLayout leftSidebar;
+	VerticalLayout mainColumn;
+	VerticalLayout rightSidebar;
+
 	public MainContainer() {
 		leftSidebar = new VerticalLayout();
 		mainColumn = new VerticalLayout();
@@ -33,11 +42,23 @@ public class MainContainer extends Composite<HorizontalLayout> {
 
 		rightSidebar.setWidth("min-content");
 		rightSidebar.getStyle().set("flex-grow", "1");
-		mainColumn.add(
-				new PostCreate(),
-				//  TODO here put posts stored in DB
-				new PresentationPostsView()
-		);
+
+		mainColumn.add(new PostCreate());
+		var publishedPosts = MainView.postService.getAll();
+		String name, image;
+		Post post;
+		int likes;
+		LocalDate localDate;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EE d LLL. yyyy");
+		for (long i = publishedPosts.size() - 1; i >= 0; i--) {
+			post = publishedPosts.get((int) i);
+			localDate = Instant.ofEpochMilli(post.getCreatedAt()).atZone(ZoneId.systemDefault()).toLocalDate();
+			likes = post.getLikedByUsers().size() - post.getDislikedByUsers().size();
+			name = post.getAuthor().getFirstName() + " " + post.getAuthor().getLastName();
+			image = (post.getAuthor().getProfilePictureURL() == null) ? "" : post.getAuthor().getProfilePictureURL();
+			mainColumn.add(new MediaObject(new PostData(image, name, localDate.format(formatter), post.getContent(), likes + "", "0", "0"))); // todo complete
+		}
+		mainColumn.add(new PresentationPostsView());
 
 		addClassName(LumoUtility.Gap.MEDIUM);
 		getContent().setWidth("100%");

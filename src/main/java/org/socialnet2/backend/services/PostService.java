@@ -8,6 +8,9 @@ import org.socialnet2.backend.repositories.PostRepository;
 import org.socialnet2.backend.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class PostService {
 	// TODO review everything
@@ -43,17 +46,11 @@ public class PostService {
 //		new PostResponseDTO(post.getId(), post.getTitle(), post.getContent(), getAuthor(user), post.getCreatedAt(), post.getLikes(), user.getProfilePictureURL());
 	}
 
-	/*public List<PostResponseDTO> getAllPost() {
-		var posts = postRepository.findAll();
-		List<PostResponseDTO> postResponses = new ArrayList<>();
-
-		for (Post post : posts)
-			postResponses.add(new PostResponseDTO(post.getId(), post.getTitle(), post.getContent(), getAuthor(post.getAuthor()), post.getCreatedAt(), post.getLikes(), post.getAuthor().getProfilePictureURL()));
-
-		return postResponses;
+	public List<Post> getAll() {
+		return  postRepository.findAll();
 	}
 
-	public Post update(UpdatedPostDTO post, long userId) {
+	/*public Post update(UpdatedPostDTO post, long userId) {
 		// TODO everything
 		return null;
 	}

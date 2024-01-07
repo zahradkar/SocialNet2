@@ -3,6 +3,8 @@ package org.socialnet2.backend.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -10,6 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Data
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 	@Column(name = "created_at", columnDefinition = "BIGINT UNSIGNED")
@@ -42,11 +46,8 @@ public class User {
 		this.password = password;
 	}
 
-	public User() {
 
-	}
-
-	public Set<Role> getRoles() {
+	/*public Set<Role> getRoles() {
 		return roles;
 	}
 
@@ -68,5 +69,5 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
+	}*/
 }
