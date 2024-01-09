@@ -4,7 +4,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
-import org.socialnet2.backend.services.UserService;
 import org.socialnet2.ui.views.MainView;
 
 public class PostCreate extends HorizontalLayout {
@@ -27,15 +26,10 @@ public class PostCreate extends HorizontalLayout {
 		var addPostBtn = new Button("Post...");
 		addPostBtn.addClassName("add-post__button");
 		addPostBtn.addClickListener(buttonClickEvent -> {
-			// TODO check if user is logged in
-
 			if (MainView.userService.getAuthenticatedUser().isEmpty())
 				new LoginDialog().open();
 			else
 				new PostNew().open();
-//				Notification.show("Already logged in!");
-
-
 		});
 		add(addPostBtn);
 	}

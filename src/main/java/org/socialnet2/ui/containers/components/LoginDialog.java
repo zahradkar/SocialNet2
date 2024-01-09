@@ -4,7 +4,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
-import org.socialnet2.backend.services.UserService;
+import com.vaadin.flow.server.VaadinSession;
+import org.socialnet2.ui.views.MainView;
 import org.socialnet2.ui.views.register.RegistrationForm;
 import org.socialnet2.ui.views.register.RegistrationFormBinder;
 
@@ -18,6 +19,7 @@ public class LoginDialog extends Dialog {
 		var loginForm = new LoginForm();
 		loginForm.setI18n(i18n);
 		loginForm.setAction("login");
+		loginForm.addLoginListener(loginEvent -> VaadinSession.getCurrent().setAttribute("user", loginEvent.getUsername()));
 		add(loginForm);
 
 		var registerForm = new RegistrationForm();
@@ -47,6 +49,7 @@ public class LoginDialog extends Dialog {
 		RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registerForm);
 		registrationFormBinder.addBindingAndValidation();
 	}
+
 
 	/*public LoginDialog() {
 		var i18n = LoginI18n.createDefault();

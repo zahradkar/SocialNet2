@@ -3,6 +3,7 @@ package org.socialnet2.backend.services;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.socialnet2.backend.dtos.UserResponseDTO;
 import org.socialnet2.backend.entities.User;
 import org.socialnet2.backend.repositories.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,7 +44,22 @@ public class UserService implements UserDetailsService {
 
 		userRepository.save(new User(email, passwordEncoder.encode(password)));
 		logger.info("User with e-mail " + email + " stored in the database!");
-//		logger.info(String.format("User with e-mail %s stored in the database!", email));
+	}
+
+	public UserResponseDTO readUser(String email) {
+		var user =  userRepository.findById(email).orElseThrow(() -> new IllegalArgumentException("User with e-mail " + email + " not found!"));
+		return new UserResponseDTO(user.getCreatedAt(),user.getFirstName(), user.getLastName(), user.getProfilePictureURL(), user.getBirthday(),user.getLocation(),user.getUpdatedAt());
+	}
+
+	public void update(String firstName, String lastName, String email, String pictureURL, LocalDate birthday, String location) {
+		var user = userRepository.findById(email).orElseThrow(() -> new IllegalArgumentException("User with e-mail " + email + " not found!"));
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setProfilePictureURL(pictureURL);
+		user.setBirthday(birthday);
+		user.setLocation(location);
+		user.setUpdatedAt(System.currentTimeMillis());
+		userRepository.save(user);
 	}
 
 	@Transactional

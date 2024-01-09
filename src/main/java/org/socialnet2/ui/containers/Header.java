@@ -3,25 +3,20 @@ package org.socialnet2.ui.containers;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
-import com.vaadin.flow.server.StreamResource;
-import org.socialnet2.backend.services.UserService;
 import org.socialnet2.ui.containers.components.LoginDialog;
+import org.socialnet2.ui.containers.components.Logo;
 import org.socialnet2.ui.containers.components.SearchBar;
+import org.socialnet2.ui.containers.components.UserInfo;
 import org.socialnet2.ui.views.MainView;
 
 public class Header extends Composite<HorizontalLayout> {
+	private UserInfo userInfo;
 
 	public Header() {
-		StreamResource imageResource = new StreamResource("logo.svg", () -> getClass().getResourceAsStream("/images/logo.svg"));
-		var logoIco = new Image(imageResource, "logo image");
-		logoIco.setWidth("40px"); // TODO use variable instead of magic number
-
 		var loginBtn = new Button();
 		loginBtn.addThemeVariants(ButtonVariant.LUMO_ICON);
 		loginBtn.setWidth("40px");
@@ -34,7 +29,7 @@ public class Header extends Composite<HorizontalLayout> {
 		getContent().setHeight("50px");
 		getContent().setAlignItems(FlexComponent.Alignment.CENTER);
 		getStyle().setBackground("white").setJustifyContent(Style.JustifyContent.SPACE_BETWEEN).set("position", "fixed").setZIndex(1).set("padding", "0 10px");
-		getContent().add(logoIco, new SearchBar(), loginBtn);
+		getContent().add(new Logo("40px"), new SearchBar(), loginBtn); // TODO width: consider using variable instead of magic number
 	}
 
 	public String getHeight() {
@@ -44,8 +39,26 @@ public class Header extends Composite<HorizontalLayout> {
 	private void loginAndRegister() {
 		if (MainView.userService.getAuthenticatedUser().isEmpty())
 			new LoginDialog().open();
-		else
-			Notification.show("Already logged in!");
+		else {
+			if (userInfo == null) {
+				userInfo = new UserInfo();
+				String userId = MainView.userService.getAuthenticatedUser().get().getEmail();
+				var user = MainView.userService.readUser(userId);
+
+				userInfo.getEmail().setValue(userId);
+				if (user.firstName() != null)
+					userInfo.getFirstName().setValue(user.firstName());
+				if (user.lastName() != null)
+					userInfo.getLastName().setValue(user.lastName());
+				if (user.profilePictureURL() != null)
+					userInfo.getProfilePictureURL().setValue(user.profilePictureURL());
+				if (user.birthday() != null)
+					userInfo.getBirthday().setValue(user.birthday());
+				if (user.location() != null)
+					userInfo.getLocation().setValue(user.location());
+			}
+			userInfo.open();
+		}
 		// TODO complete. it seems that user stays logged in even after restart of the app
 	}
 }

@@ -3,12 +3,11 @@ package org.socialnet2.backend.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.socialnet2.backend.entities.Post;
-import org.socialnet2.backend.records.PostData;
+import org.socialnet2.backend.dtos.PostDTO;
 import org.socialnet2.backend.repositories.PostRepository;
 import org.socialnet2.backend.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,7 +37,7 @@ public class PostService {
 		postRepository.deleteById(id);
 	}*/
 
-	public void create(PostData data, String email) {
+	public void create(PostDTO data, String email) {
 		logger.debug(data.content());
 		var user = userRepository.getReferenceById(email); // TODO test if user never is null
 		postRepository.save(new Post(data.content(), user));
@@ -46,7 +45,7 @@ public class PostService {
 //		new PostResponseDTO(post.getId(), post.getTitle(), post.getContent(), getAuthor(user), post.getCreatedAt(), post.getLikes(), user.getProfilePictureURL());
 	}
 
-	public List<Post> getAll() {
+	public List<Post> readAll() {
 		return  postRepository.findAll();
 	}
 

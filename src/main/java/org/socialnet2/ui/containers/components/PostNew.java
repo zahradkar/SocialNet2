@@ -8,7 +8,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
-import org.socialnet2.backend.records.PostData;
+import org.socialnet2.backend.dtos.PostDTO;
 import org.socialnet2.ui.containers.MainContainer;
 import org.socialnet2.ui.views.MainView;
 
@@ -29,7 +29,7 @@ public class PostNew extends Dialog {
 
 		var publishBtn = new Button("Publish...");
 		publishBtn.addClickListener(buttonClickEvent -> {
-			var postData = new PostData("https://randomuser.me/api/portraits/women/76.jpg", "Lidmila Vilensky", "Apr 17", textarea.getValue(), "0", "0", "0"); // todo complete
+			var postData = new PostDTO("https://randomuser.me/api/portraits/women/76.jpg", "Lidmila Vilensky", "Apr 17", textarea.getValue(), "0", "0", "0"); // todo complete
 			if (saveToDB(postData))
 				displayOnScreen(postData);
 			this.close();
@@ -42,7 +42,7 @@ public class PostNew extends Dialog {
 		add(content);
 	}
 
-	private boolean saveToDB(PostData data) {
+	private boolean saveToDB(PostDTO data) {
 		var user = MainView.userService.getAuthenticatedUser();
 		if (user.isPresent()) {
 			MainView.postService.create(data, user.get().getEmail());
@@ -51,7 +51,7 @@ public class PostNew extends Dialog {
 		return false;
 	}
 
-	private void displayOnScreen(PostData data) {
+	private void displayOnScreen(PostDTO data) {
 		MainContainer.instance.addToMainColumn(new MediaObject(data));
 		Notification.show("Published!");
 	}
