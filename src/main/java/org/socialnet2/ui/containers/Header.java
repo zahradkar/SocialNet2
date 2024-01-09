@@ -7,14 +7,12 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
-import org.socialnet2.ui.containers.components.LoginDialog;
-import org.socialnet2.ui.containers.components.Logo;
-import org.socialnet2.ui.containers.components.SearchBar;
-import org.socialnet2.ui.containers.components.UserInfo;
+import org.socialnet2.ui.containers.components.*;
 import org.socialnet2.ui.views.MainView;
 
 public class Header extends Composite<HorizontalLayout> {
-	private UserInfo userInfo;
+	private UserInfoForm userInfoForm2;
+	public static boolean valuesLoaded;
 
 	public Header() {
 		var loginBtn = new Button();
@@ -37,28 +35,22 @@ public class Header extends Composite<HorizontalLayout> {
 	}
 
 	private void loginAndRegister() {
-		if (MainView.userService.getAuthenticatedUser().isEmpty())
+		if (MainView.userService.getAuthenticatedUser().isEmpty()) {
 			new LoginDialog().open();
-		else {
-			if (userInfo == null) {
-				userInfo = new UserInfo();
-				String userId = MainView.userService.getAuthenticatedUser().get().getEmail();
-				var user = MainView.userService.readUser(userId);
-
-				userInfo.getEmail().setValue(userId);
-				if (user.firstName() != null)
-					userInfo.getFirstName().setValue(user.firstName());
-				if (user.lastName() != null)
-					userInfo.getLastName().setValue(user.lastName());
-				if (user.profilePictureURL() != null)
-					userInfo.getProfilePictureURL().setValue(user.profilePictureURL());
-				if (user.birthday() != null)
-					userInfo.getBirthday().setValue(user.birthday());
-				if (user.location() != null)
-					userInfo.getLocation().setValue(user.location());
-			}
-			userInfo.open();
 		}
-		// TODO complete. it seems that user stays logged in even after restart of the app
+		else {
+			/*
+			existuju 3 scenare:
+			- userInfoForm2 == null > vytvorit novu instanciu a nacitat hodnoty (toto mam zatial vyriesene)
+			- userInfoForm je po logout, takze != null, ale nema nacitane (spravne) hodnoty > tu treba nacitat spravne hodnoty, ale bez vytovenia novej instancie
+			- userInfoForm je closed, takze ma nacitane spravne hodnoty > tu netreba urobit nic
+			* */
+			if (userInfoForm2 == null)
+				userInfoForm2 = new UserInfoForm();
+			else if (!valuesLoaded)
+				userInfoForm2.readValuesFromDB();
+			userInfoForm2.open();
+		}
+		// TODO user stays logged in even after restart of the app
 	}
 }

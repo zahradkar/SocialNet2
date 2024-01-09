@@ -4,12 +4,11 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
-import com.vaadin.flow.server.VaadinSession;
-import org.socialnet2.ui.views.MainView;
 import org.socialnet2.ui.views.register.RegistrationForm;
 import org.socialnet2.ui.views.register.RegistrationFormBinder;
 
 public class LoginDialog extends Dialog {
+
 	public LoginDialog() {
 		var i18n = LoginI18n.createDefault();
 		i18n.getForm().setUsername("E-mail");
@@ -19,7 +18,7 @@ public class LoginDialog extends Dialog {
 		var loginForm = new LoginForm();
 		loginForm.setI18n(i18n);
 		loginForm.setAction("login");
-		loginForm.addLoginListener(loginEvent -> VaadinSession.getCurrent().setAttribute("user", loginEvent.getUsername()));
+//		loginForm.addLoginListener(loginEvent -> );
 		add(loginForm);
 
 		var registerForm = new RegistrationForm();
@@ -39,10 +38,6 @@ public class LoginDialog extends Dialog {
 			add(loginForm);
 			getFooter().add(registerBtn);
 		});
-
-//		var anchorReg = new Anchor("http://localhost:8080/register", "Registrácia");
-//		anchorReg.addClassName("font-weight-bold");
-//		i18n.setAdditionalInformation(anchorReg);
 
 		getFooter().add(registerBtn);
 
@@ -70,6 +65,4 @@ public class LoginDialog extends Dialog {
 		anchorReg.addClassName("font-weight-bold");
 		getFooter().add(anchorReg);
 	}*/
-
-
 }
