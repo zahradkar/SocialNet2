@@ -1,13 +1,24 @@
 package org.socialnet2.ui.containers.components;
 
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.server.VaadinSession;
+import org.socialnet2.backend.security.SecurityUtils;
+import org.socialnet2.ui.containers.Header;
+import org.socialnet2.ui.views.MainView;
 import org.socialnet2.ui.views.register.RegistrationForm;
 import org.socialnet2.ui.views.register.RegistrationFormBinder;
 
-public class LoginDialog extends Dialog {
+public class LoginDialog extends Dialog implements BeforeEnterObserver, ComponentEventListener<AbstractLogin.LoginEvent> {
+	private static final String LOGIN_SUCCESS_URL = "/";
+	private LoginForm loginForm;
 
 	public LoginDialog() {
 		var i18n = LoginI18n.createDefault();
@@ -15,10 +26,10 @@ public class LoginDialog extends Dialog {
 		i18n.getErrorMessage().setUsername("E-mail is required!");
 		// TODO improve login form
 
-		var loginForm = new LoginForm();
+		loginForm = new LoginForm();
 		loginForm.setI18n(i18n);
-		loginForm.setAction("login");
-//		loginForm.addLoginListener(loginEvent -> );
+//		loginForm.setAction("login");
+		loginForm.addLoginListener(this);
 		add(loginForm);
 
 		var registerForm = new RegistrationForm();
@@ -43,6 +54,41 @@ public class LoginDialog extends Dialog {
 
 		RegistrationFormBinder registrationFormBinder = new RegistrationFormBinder(registerForm);
 		registrationFormBinder.addBindingAndValidation();
+	}
+
+	@Override
+	public void onComponentEvent(AbstractLogin.LoginEvent loginEvent) {
+		boolean authenticated = SecurityUtils.authenticate(loginEvent.getUsername(), loginEvent.getPassword());
+		if (!authenticated)
+			loginForm.setError(true);
+		else {
+			loadUserData(loginEvent.getUsername());
+			this.close();
+			Notification.show("Welcome!");
+//			UI.getCurrent().getPage().fetchCurrentURL(url -> Notification.show("Current URL: " + url));
+//			UI.getCurrent().getPage().setLocation(LOGIN_SUCCESS_URL);
+		}
+	}
+
+	private void loadUserData(String userId) {
+		var user = MainView.userService.readUser(userId);
+		var session = VaadinSession.getCurrent();
+		session.setAttribute("user", userId);
+		session.setAttribute("firstName", user.firstName());
+		session.setAttribute("lastName", user.lastName());
+		session.setAttribute("profilePictureURL", user.profilePictureURL());
+		session.setAttribute("birthday", user.birthday());
+		session.setAttribute("location", user.location());
+	}
+
+	@Override
+	public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+		if (beforeEnterEvent.getLocation()
+				.getQueryParameters()
+				.getParameters()
+				.containsKey("error")) {
+			loginForm.setError(true);
+		}
 	}
 
 

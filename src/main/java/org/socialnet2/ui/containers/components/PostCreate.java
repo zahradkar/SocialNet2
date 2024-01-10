@@ -4,7 +4,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
-import org.socialnet2.ui.views.MainView;
+import com.vaadin.flow.server.VaadinSession;
 
 public class PostCreate extends HorizontalLayout {
 	public PostCreate() {
@@ -26,7 +26,8 @@ public class PostCreate extends HorizontalLayout {
 		var addPostBtn = new Button("Post...");
 		addPostBtn.addClassName("add-post__button");
 		addPostBtn.addClickListener(buttonClickEvent -> {
-			if (MainView.userService.getAuthenticatedUser().isEmpty())
+//			if (MainView.userService.getAuthenticatedUser().isEmpty())
+			if (VaadinSession.getCurrent().getAttribute("user") == null)
 				new LoginDialog().open();
 			else
 				new PostNew().open();

@@ -1,29 +1,40 @@
 package org.socialnet2.ui.views;
 
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.login.AbstractLogin;
+import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginOverlay;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.socialnet2.backend.security.SecurityUtils;
 
 @Route("login")
 @PageTitle("SocialNet | Login")
 @AnonymousAllowed
-public class LoginView extends LoginOverlay implements BeforeEnterObserver {
+public class LoginView extends VerticalLayout implements BeforeEnterObserver, ComponentEventListener<AbstractLogin.LoginEvent> {
+
+	private static final String LOGIN_SUCCESS_URL = "/";
+
+	private LoginForm login = new LoginForm();
 
 	public LoginView() {
-		setTitle("SocialNet");
-		setDescription("Welcome to best social network ever!");
+		addClassName("login-view");
+		setSizeFull();
 
-		var anchorReg = new Anchor("http://localhost:8081/register", "Sign up here."); // TODO read port number from variable instead of using hardcoded
-		anchorReg.addClassName("font-weight-bold");
+		setJustifyContentMode(JustifyContentMode.CENTER);
+		setAlignItems(Alignment.CENTER);
 
-		getFooter().add(new Span("Don't have account? "), anchorReg);
-		setOpened(true);
-		setAction("login");
+		login.addLoginListener(this);
+
+		add(new H1("Test Application"), login);
 	}
 
 	@Override
@@ -32,7 +43,18 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
 				.getQueryParameters()
 				.getParameters()
 				.containsKey("error")) {
-			this.setError(true);
+			login.setError(true);
+		}
+	}
+
+	@Override
+	public void onComponentEvent(AbstractLogin.LoginEvent loginEvent) {
+		boolean authenticated = SecurityUtils.authenticate(
+				loginEvent.getUsername(), loginEvent.getPassword());
+		if (authenticated) {
+			UI.getCurrent().getPage().setLocation(LOGIN_SUCCESS_URL);
+		} else {
+			login.setError(true);
 		}
 	}
 }

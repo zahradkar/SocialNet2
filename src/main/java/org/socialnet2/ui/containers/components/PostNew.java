@@ -8,6 +8,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.server.VaadinSession;
 import org.socialnet2.backend.dtos.PostDTO;
 import org.socialnet2.ui.containers.MainContainer;
 import org.socialnet2.ui.views.MainView;
@@ -21,6 +22,12 @@ public class PostNew extends Dialog {
 		var foot = new HorizontalLayout();
 
 		Image profilePicture = new Image(PresentationPostsView.postData.get(5).image(), "profile picture"); // TODO update number to be random from list range
+
+
+		System.out.println(VaadinSession.getCurrent().getAttribute("user"));
+		System.out.println(VaadinSession.getCurrent().getAttribute("firstName"));
+
+
 		profilePicture.setHeight("var(--lumo-size-l)");
 		profilePicture.setWidth("var(--lumo-size-l)");
 		profilePicture.getStyle().setBorderRadius("50%");
@@ -43,9 +50,9 @@ public class PostNew extends Dialog {
 	}
 
 	private boolean saveToDB(PostDTO data) {
-		var user = MainView.userService.getAuthenticatedUser();
-		if (user.isPresent()) {
-			MainView.postService.create(data, user.get().getEmail());
+//		var user = MainView.userService.getAuthenticatedUser();
+		if (VaadinSession.getCurrent().getAttribute("user") != null) {
+			MainView.postService.create(data, VaadinSession.getCurrent().getAttribute("user").toString());
 			return true;
 		}
 		return false;

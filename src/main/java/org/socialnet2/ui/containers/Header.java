@@ -7,12 +7,21 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Style;
-import org.socialnet2.ui.containers.components.*;
-import org.socialnet2.ui.views.MainView;
+import com.vaadin.flow.server.VaadinSession;
+import lombok.Getter;
+import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.socialnet2.ui.containers.components.LoginDialog;
+import org.socialnet2.ui.containers.components.Logo;
+import org.socialnet2.ui.containers.components.SearchBar;
+import org.socialnet2.ui.containers.components.UserInfoForm;
 
+@Getter
+@Setter
 public class Header extends Composite<HorizontalLayout> {
-	private UserInfoForm userInfoForm2;
-	public static boolean valuesLoaded;
+	private static final Logger logger = LoggerFactory.getLogger(Header.class);
+	private UserInfoForm userInfoForm;
 
 	public Header() {
 		var loginBtn = new Button();
@@ -35,22 +44,15 @@ public class Header extends Composite<HorizontalLayout> {
 	}
 
 	private void loginAndRegister() {
-		if (MainView.userService.getAuthenticatedUser().isEmpty()) {
+//		if (MainView.userService.getAuthenticatedUser().isEmpty())
+		if (VaadinSession.getCurrent().getAttribute("user") == null)
 			new LoginDialog().open();
-		}
 		else {
-			/*
-			existuju 3 scenare:
-			- userInfoForm2 == null > vytvorit novu instanciu a nacitat hodnoty (toto mam zatial vyriesene)
-			- userInfoForm je po logout, takze != null, ale nema nacitane (spravne) hodnoty > tu treba nacitat spravne hodnoty, ale bez vytovenia novej instancie
-			- userInfoForm je closed, takze ma nacitane spravne hodnoty > tu netreba urobit nic
-			* */
-			if (userInfoForm2 == null)
-				userInfoForm2 = new UserInfoForm();
-			else if (!valuesLoaded)
-				userInfoForm2.readValuesFromDB();
-			userInfoForm2.open();
+			if (userInfoForm == null)
+				userInfoForm = new UserInfoForm();
+			if (userInfoForm.getEmailTField().getValue().isBlank())
+				userInfoForm.fillValues();
+			userInfoForm.open();
 		}
-		// TODO user stays logged in even after restart of the app
 	}
 }
