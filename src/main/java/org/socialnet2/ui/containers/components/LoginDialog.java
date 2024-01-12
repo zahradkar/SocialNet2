@@ -73,12 +73,12 @@ public class LoginDialog extends Dialog implements BeforeEnterObserver, Componen
 	private void loadUserData(String userId) {
 		var user = MainView.userService.readUser(userId);
 		var session = VaadinSession.getCurrent();
-		session.setAttribute("user", userId);
-		session.setAttribute("firstName", user.firstName());
-		session.setAttribute("lastName", user.lastName());
-		session.setAttribute("profilePictureURL", user.profilePictureURL());
-		session.setAttribute("birthday", user.birthday());
-		session.setAttribute("location", user.location());
+		session.setAttribute(UserInfoForm.USER, userId);
+		session.setAttribute(UserInfoForm.FIRST_NAME, user.firstName());
+		session.setAttribute(UserInfoForm.LAST_NAME, user.lastName());
+		session.setAttribute(UserInfoForm.PROFILE_PICTURE, user.profilePictureURL());
+		session.setAttribute(UserInfoForm.BIRTHDAY, user.birthday());
+		session.setAttribute(UserInfoForm.LOCATION, user.location());
 	}
 
 	@Override

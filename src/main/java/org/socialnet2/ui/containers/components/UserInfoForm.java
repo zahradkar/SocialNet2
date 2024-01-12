@@ -5,6 +5,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -16,7 +17,6 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.socialnet2.backend.security.SecurityUtils;
-import org.socialnet2.ui.containers.Header;
 import org.socialnet2.ui.views.MainView;
 
 import java.time.LocalDate;
@@ -25,8 +25,15 @@ import java.time.LocalDate;
 @AnonymousAllowed
 @Getter
 public class UserInfoForm extends Dialog {
-	private static final Logger logger = LoggerFactory.getLogger(UserInfoForm.class);
 	// todo update class (provisional made)
+	public static final String USER = "user";
+	public static final String FIRST_NAME = "firstName";
+	public static final String LAST_NAME = "lastName";
+	public static final String PROFILE_PICTURE = "profilePictureURL";
+	public static final String BIRTHDAY = "birthday";
+	public static final String LOCATION = "location";
+	private static final Logger logger = LoggerFactory.getLogger(UserInfoForm.class);
+
 	private final TextField firstNameTField = new TextField("first name");
 	private final TextField lastNameTField = new TextField("last name");
 	private final TextField emailTField = new TextField("e-mail");
@@ -62,41 +69,30 @@ public class UserInfoForm extends Dialog {
 
 	public void fillValues() {
 		var session = VaadinSession.getCurrent();
-		emailTField.setValue(session.getAttribute("user").toString());
-
-		Object temp = session.getAttribute("firstName");
-		if (temp != null)
-			firstNameTField.setValue(temp.toString());
-		else
-			firstNameTField.setValue("");
-
-		temp = session.getAttribute("lastName");
-		if (temp != null)
-			lastNameTField.setValue(temp.toString());
-		else
-			lastNameTField.setValue("");
-
-		temp = session.getAttribute("profilePictureURL");
-		if (temp != null)
-			profilePictureUrlTField.setValue(temp.toString());
-		else
-			profilePictureUrlTField.setValue("");
-
-		if (session.getAttribute("birthday") != null)
-			birthdayDPicker.setValue((LocalDate) session.getAttribute("birthday"));
-//		else
-//			birthday.setValue(null); // todo test if value can be null
-
-		temp = session.getAttribute("location");
-		if (temp != null)
-			locationTField.setValue(temp.toString());
-		else
-			locationTField.setValue("");
+		emailTField.setValue(session.getAttribute(USER).toString());
+		firstNameTField.setValue(session.getAttribute(FIRST_NAME).toString());
+		lastNameTField.setValue(session.getAttribute(LAST_NAME).toString());
+		profilePictureUrlTField.setValue(session.getAttribute(PROFILE_PICTURE).toString());
+		if (session.getAttribute(BIRTHDAY) != null) // TODO test if is necessary this condition
+			birthdayDPicker.setValue((LocalDate) session.getAttribute(BIRTHDAY));
+		locationTField.setValue(session.getAttribute(LOCATION).toString());
 	}
 
 	private void save() {
+		// todo consider update userService.update() to use PostDTO
 		MainView.userService.update(firstNameTField.getValue(), lastNameTField.getValue(), emailTField.getValue(), profilePictureUrlTField.getValue(), birthdayDPicker.getValue(), locationTField.getValue());
-		Notification.show("Saved!");
+		updateCookies();
+		Notification not = Notification.show("Saved!");
+		not.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 		this.close();
+	}
+
+	private void updateCookies() {
+		VaadinSession session = VaadinSession.getCurrent();
+		session.setAttribute(FIRST_NAME, firstNameTField.getValue());
+		session.setAttribute(LAST_NAME, lastNameTField.getValue());
+		session.setAttribute(PROFILE_PICTURE, profilePictureUrlTField.getValue());
+		session.setAttribute(BIRTHDAY, birthdayDPicker.getValue()); // todo test this row
+		session.setAttribute(LOCATION, locationTField.getValue());
 	}
 }

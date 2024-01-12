@@ -4,33 +4,42 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.server.VaadinSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.socialnet2.backend.dtos.PostDTO;
 import org.socialnet2.ui.containers.MainContainer;
 import org.socialnet2.ui.views.MainView;
 
 public class PostNew extends Dialog {
 	// TODO everything
+	private static final Logger logger = LoggerFactory.getLogger(PostNew.class);
+
 	public PostNew() {
 		var content = new VerticalLayout();
 		var head = new HorizontalLayout();
 		var body = new HorizontalLayout();
 		var foot = new HorizontalLayout();
 
-		Image profilePicture = new Image(PresentationPostsView.postData.get(5).image(), "profile picture"); // TODO update number to be random from list range
+		Image profilePicture;
+		Icon icon = VaadinIcon.USER.create();
+		if (VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE) != null) {
+			profilePicture = new Image(VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString(), "profile picture");
+			profilePicture.setHeight("var(--lumo-size-l)");
+			profilePicture.setWidth("var(--lumo-size-l)");
+			profilePicture.getStyle().setBorderRadius("50%");
+			head.add(profilePicture);
+		} else {
+			logger.info("No profile picture found!");
+			head.add(icon);
+		}
 
-
-		System.out.println(VaadinSession.getCurrent().getAttribute("user"));
-		System.out.println(VaadinSession.getCurrent().getAttribute("firstName"));
-
-
-		profilePicture.setHeight("var(--lumo-size-l)");
-		profilePicture.setWidth("var(--lumo-size-l)");
-		profilePicture.getStyle().setBorderRadius("50%");
 
 		var textarea = new TextArea("", "Here your thoughts...");
 
@@ -42,7 +51,8 @@ public class PostNew extends Dialog {
 			this.close();
 		});
 
-		head.add(profilePicture, new Span("John Smith"));
+//		head.addComponentAsFirst(Objects.requireNonNullElse(profilePicture, icon)); // wau
+		head.add(new Span("John Smith"));
 		body.add(textarea);
 		foot.add(publishBtn);
 		content.add(head, body, foot);
@@ -51,8 +61,8 @@ public class PostNew extends Dialog {
 
 	private boolean saveToDB(PostDTO data) {
 //		var user = MainView.userService.getAuthenticatedUser();
-		if (VaadinSession.getCurrent().getAttribute("user") != null) {
-			MainView.postService.create(data, VaadinSession.getCurrent().getAttribute("user").toString());
+		if (VaadinSession.getCurrent().getAttribute(UserInfoForm.USER) != null) {
+			MainView.postService.create(data, VaadinSession.getCurrent().getAttribute(UserInfoForm.USER).toString());
 			return true;
 		}
 		return false;
