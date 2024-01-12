@@ -40,7 +40,7 @@ public class PostService {
 	public void create(PostDTO data, String email) {
 		logger.debug(data.content());
 		var user = userRepository.getReferenceById(email); // TODO test if user never is null
-		postRepository.save(new Post(data.content(), user));
+		postRepository.save(new Post(user, data.content(), data.date()));// todo add things from data accordingly
 
 //		new PostResponseDTO(post.getId(), post.getTitle(), post.getContent(), getAuthor(user), post.getCreatedAt(), post.getLikes(), user.getProfilePictureURL());
 	}

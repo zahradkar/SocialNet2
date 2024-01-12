@@ -5,8 +5,8 @@ import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import org.socialnet2.backend.entities.Post;
 import org.socialnet2.backend.dtos.PostDTO;
+import org.socialnet2.backend.entities.Post;
 import org.socialnet2.ui.containers.components.MediaObject;
 import org.socialnet2.ui.containers.components.PostCreate;
 import org.socialnet2.ui.containers.components.PresentationPostsView;
@@ -15,7 +15,6 @@ import org.socialnet2.ui.views.MainView;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 //@Route("main")
 public class MainContainer extends Composite<HorizontalLayout> {
@@ -45,18 +44,16 @@ public class MainContainer extends Composite<HorizontalLayout> {
 
 		mainColumn.add(new PostCreate());
 		var publishedPosts = MainView.postService.readAll();
-		String name, image;
+		String name;
 		Post post;
 		int likes;
 		LocalDate localDate;
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EE d LLL. yyyy");
 		for (long i = publishedPosts.size() - 1; i >= 0; i--) {
 			post = publishedPosts.get((int) i);
 			localDate = Instant.ofEpochMilli(post.getCreatedAt()).atZone(ZoneId.systemDefault()).toLocalDate();
 			likes = post.getLikedByUsers().size() - post.getDislikedByUsers().size();
 			name = post.getAuthor().getFirstName() + " " + post.getAuthor().getLastName();
-			image = (post.getAuthor().getProfilePictureURL() == null) ? "" : post.getAuthor().getProfilePictureURL();
-			mainColumn.add(new MediaObject(new PostDTO(image, name, localDate.format(formatter), post.getContent(), likes + "", "0", "0"))); // todo complete
+			mainColumn.add(new MediaObject(new PostDTO(post.getAuthor().getProfilePictureURL(), name, localDate, post.getContent(), likes + "", "0", "0"))); // todo update comment and share values
 		}
 		mainColumn.add(new PresentationPostsView());
 

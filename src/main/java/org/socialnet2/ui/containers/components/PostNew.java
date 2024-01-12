@@ -17,6 +17,8 @@ import org.socialnet2.backend.dtos.PostDTO;
 import org.socialnet2.ui.containers.MainContainer;
 import org.socialnet2.ui.views.MainView;
 
+import java.time.LocalDate;
+
 public class PostNew extends Dialog {
 	// TODO everything
 	private static final Logger logger = LoggerFactory.getLogger(PostNew.class);
@@ -27,32 +29,40 @@ public class PostNew extends Dialog {
 		var body = new HorizontalLayout();
 		var foot = new HorizontalLayout();
 
-		Image profilePicture;
-		Icon icon = VaadinIcon.USER.create();
-		if (VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE) != null) {
-			profilePicture = new Image(VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString(), "profile picture");
+		if (!VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString().isEmpty()) {
+			// todo fix loading image (does not work)
+			logger.info("Profile picture found - using:" + VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString());
+			logger.info("profilePictureURL.length(): " + VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString().length());
+			var profilePicture = new Image(VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString(), "profile picture");
 			profilePicture.setHeight("var(--lumo-size-l)");
 			profilePicture.setWidth("var(--lumo-size-l)");
 			profilePicture.getStyle().setBorderRadius("50%");
 			head.add(profilePicture);
 		} else {
-			logger.info("No profile picture found!");
-			head.add(icon);
+			logger.info("No profile picture found - used default user icon");
+			head.add(VaadinIcon.USER.create());
 		}
 
+		var nameSpan = new Span("no name");
+		var fName = VaadinSession.getCurrent().getAttribute(UserInfoForm.FIRST_NAME).toString();
+		var lName = VaadinSession.getCurrent().getAttribute(UserInfoForm.LAST_NAME).toString();
+		if (!fName.isEmpty() || !lName.isEmpty())
+			nameSpan.setText(fName + " " + lName);
+		logger.info("name in the post: " + nameSpan.getText());
 
 		var textarea = new TextArea("", "Here your thoughts...");
 
 		var publishBtn = new Button("Publish...");
 		publishBtn.addClickListener(buttonClickEvent -> {
-			var postData = new PostDTO("https://randomuser.me/api/portraits/women/76.jpg", "Lidmila Vilensky", "Apr 17", textarea.getValue(), "0", "0", "0"); // todo complete
+			var postData = new PostDTO(
+					VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString(), nameSpan.getText(), LocalDate.now(), textarea.getValue(), "0", "0", "0"); // todo complete
 			if (saveToDB(postData))
 				displayOnScreen(postData);
 			this.close();
 		});
 
 //		head.addComponentAsFirst(Objects.requireNonNullElse(profilePicture, icon)); // wau
-		head.add(new Span("John Smith"));
+		head.add(nameSpan);
 		body.add(textarea);
 		foot.add(publishBtn);
 		content.add(head, body, foot);

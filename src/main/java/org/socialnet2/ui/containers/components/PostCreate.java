@@ -17,7 +17,7 @@ public class PostCreate extends HorizontalLayout {
 		getStyle().setBackground("white");
 		getStyle().setBorderRadius("30px");
 		getStyle().setPadding("0 10px");
-		Image profilePicture = new Image(PresentationPostsView.postData.get(5).image(), "profile picture"); // TODO update number to be random from list range
+		Image profilePicture = new Image(PresentationPostsView.postData.get(5).imageURL(), "profile picture"); // TODO update number to be random from list range
 		profilePicture.setHeight("var(--lumo-size-l)");
 		profilePicture.setWidth("var(--lumo-size-l)");
 		profilePicture.getStyle().setBorderRadius("50%");

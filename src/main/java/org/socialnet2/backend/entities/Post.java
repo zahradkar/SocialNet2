@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class Post {
 	@Column(columnDefinition = "bigint unsigned")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-//	private String title;
 	private String content;
+	private LocalDate publishDate;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "author_id")
 	private User author;
@@ -37,8 +38,9 @@ public class Post {
 	@Column(name = "updated_at", columnDefinition = "BIGINT UNSIGNED")
 	private long updatedAt; // TODO somehow improve long -> unsigned long
 
-	public Post(String content, User author) {
+	public Post(User author, String content, LocalDate publishDate) {
 		this.content = content;
 		this.author = author;
+		this.publishDate = publishDate;
 	}
 }
