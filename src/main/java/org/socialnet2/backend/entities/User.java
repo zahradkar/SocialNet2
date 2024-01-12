@@ -28,13 +28,13 @@ public class User {
 	@Column(length = 60)
 	private String password;
 	@Column(name = "first_name", length = 30)
-	private String firstName;
+	private String firstName ="";
 	@Column(name = "last_name", length = 50)
-	private String lastName;
+	private String lastName="";
 	@Column(name = "profile_picture_URL")
-	private String profilePictureURL;
+	private String profilePictureURL="";
 	private LocalDate birthday;
-	private String location;
+	private String location="";
 	@Column(name = "updated_at", columnDefinition = "BIGINT UNSIGNED")
 	private long updatedAt; // TODO somehow improve long -> unsigned long
 	@Enumerated(EnumType.STRING)
