@@ -55,12 +55,13 @@
   align-items: center;
 }
 
-.posts-view .icon {
-  color: var(--lumo-tertiary-text-color);
-  height: calc(var(--lumo-icon-size-s) * 0.8);
-  margin-right: var(--lumo-space-s);
-  width: calc(var(--lumo-icon-size-s) * 0.8);
-}
+/* todo i don't know it the rules below are used */
+/*.posts-view .icon {*/
+/*  color: var(--lumo-tertiary-text-color);*/
+/*  height: calc(var(--lumo-icon-size-s) * 0.8);*/
+/*  margin-right: var(--lumo-space-s);*/
+/*  width: calc(var(--lumo-icon-size-s) * 0.8);*/
+/*}*/
 
 .posts-view .likes,
 .posts-view .comments,

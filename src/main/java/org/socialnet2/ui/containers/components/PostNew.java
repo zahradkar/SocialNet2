@@ -7,6 +7,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -25,9 +26,11 @@ public class PostNew extends Dialog {
 
 	public PostNew() {
 		var content = new VerticalLayout();
+		content.setPadding(false); // this works :)
 		var head = new HorizontalLayout();
 		var body = new HorizontalLayout();
 		var foot = new HorizontalLayout();
+		foot.setJustifyContentMode(FlexComponent.JustifyContentMode.END); // todo fix: this does not work :(
 
 		if (!VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString().isEmpty()) {
 			// todo fix loading image (does not work)
@@ -40,7 +43,7 @@ public class PostNew extends Dialog {
 			head.add(profilePicture);
 		} else {
 			logger.info("No profile picture found - used default user icon");
-			head.add(VaadinIcon.USER.create());
+			head.add(new UserIcon());
 		}
 
 		var nameSpan = new Span("no name");
@@ -51,6 +54,8 @@ public class PostNew extends Dialog {
 		logger.info("name in the post: " + nameSpan.getText());
 
 		var textarea = new TextArea("", "Here your thoughts...");
+		textarea.setWidth("400px");
+		textarea.setHeight("200px"); // TODO calculate accordingly and apply responsive design
 
 		var publishBtn = new Button("Publish...");
 		publishBtn.addClickListener(buttonClickEvent -> {

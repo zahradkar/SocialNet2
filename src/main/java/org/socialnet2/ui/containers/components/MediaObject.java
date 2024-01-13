@@ -71,9 +71,8 @@ public class MediaObject extends HorizontalLayout {
 //		actions.add(likeIcon, likes, commentIcon, comments, shareIcon, shares);
 
 		description.add(header, post, actions);
-		Icon userIcon = VaadinIcon.USER.create();
-		userIcon.setSize("44px");
-		userIcon.getStyle().setMarginRight("12px"); // todo must unite style of icons with profile image
+		UserIcon userIcon = new UserIcon();
+
 		if (image.getSrc().isEmpty())
 			add(userIcon); // todo add style to icon and apply to whole project
 		else
