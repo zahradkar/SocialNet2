@@ -4,8 +4,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -14,7 +12,7 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.server.VaadinSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.socialnet2.backend.dtos.PostDTO;
+import org.socialnet2.backend.dtos.PostRequestDTO;
 import org.socialnet2.ui.containers.MainContainer;
 import org.socialnet2.ui.views.MainView;
 
@@ -59,11 +57,21 @@ public class PostNew extends Dialog {
 
 		var publishBtn = new Button("Publish...");
 		publishBtn.addClickListener(buttonClickEvent -> {
-			var postData = new PostDTO(
-					VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString(), nameSpan.getText(), LocalDate.now(), textarea.getValue(), "0", "0", "0"); // todo complete
-			if (saveToDB(postData))
-				displayOnScreen(postData);
-			this.close();
+			if (textarea.getValue().isEmpty()) {
+				Notification.show("Nothing to post!");
+				return;
+			}
+
+			var postData = new PostRequestDTO(VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString(), nameSpan.getText(), LocalDate.now(), textarea.getValue(), "0", "0", "0"); // todo complete
+
+			var user = VaadinSession.getCurrent().getAttribute(UserInfoForm.USER);
+			if (user != null) {
+				// todo test
+				var postId = MainView.postService.create(postData, user.toString()); // storing to DB; returns postId
+				displayOnScreen(postData, postId);
+				this.close();
+			} else
+				Notification.show("You are not logged in!");
 		});
 
 //		head.addComponentAsFirst(Objects.requireNonNullElse(profilePicture, icon)); // wau
@@ -74,17 +82,8 @@ public class PostNew extends Dialog {
 		add(content);
 	}
 
-	private boolean saveToDB(PostDTO data) {
-//		var user = MainView.userService.getAuthenticatedUser();
-		if (VaadinSession.getCurrent().getAttribute(UserInfoForm.USER) != null) {
-			MainView.postService.create(data, VaadinSession.getCurrent().getAttribute(UserInfoForm.USER).toString());
-			return true;
-		}
-		return false;
-	}
-
-	private void displayOnScreen(PostDTO data) {
-		MainContainer.instance.addToMainColumn(new MediaObject(data));
+	private void displayOnScreen(PostRequestDTO data, long postId) {
+		MainContainer.instance.addToMainColumn(new MediaObject(data, postId));
 		Notification.show("Published!");
 	}
 }

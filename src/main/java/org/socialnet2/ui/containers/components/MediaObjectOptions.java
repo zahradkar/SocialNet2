@@ -4,32 +4,39 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import lombok.Getter;
 
+@Getter
 public abstract class MediaObjectOptions extends HorizontalLayout {
-    protected MediaObjectOptions(Icon icon1, Icon icon2, String votes) {
-        initialize(icon1, votes);
+	private Button btn1;
+	private Button btn2;
+	private Span countSpan;
 
-        icon2.addClassName("media-object__icon");
-        var btn2 = new Button(icon2);
-        btn2.addClassName("media-object__button");
+	protected MediaObjectOptions(Icon icon1, Icon icon2, String votes) {
+		initialize(icon1, votes);
 
-        add(btn2);
-    }
+		icon2.addClassName("media-object__icon");
+		btn2 = new Button(icon2);
+		btn2.addClassName("media-object__button");
 
-    protected MediaObjectOptions(Icon icon1, String number) {
-        initialize(icon1, number);
-    }
+		add(btn2);
+	}
 
-    private void initialize(Icon icon1, String number) {
-        icon1.addClassName("media-object__icon");
-        var btn1 = new Button(icon1);
-        btn1.addClassName("media-object__button");
+	protected MediaObjectOptions(Icon icon1, String number) {
+		initialize(icon1, number);
+	}
 
-        var count = new Span(number);
-        count.addClassName("likes"); // TODO i don't like this
+	private void initialize(Icon icon1, String number) {
+		icon1.addClassName("media-object__icon");
+		btn1 = new Button(icon1);
+		btn1.addClassName("media-object__button");
 
-        setAlignItems(Alignment.CENTER);
-        addClassName("media-object__options");
-        add(btn1, count);
-    }
+		countSpan = new Span(number);
+		countSpan.addClassName("likes"); // I don't like this
+
+		setAlignItems(Alignment.CENTER);
+		addClassName("media-object__options");
+		add(btn1, countSpan);
+	}
+
 }

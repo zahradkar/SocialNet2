@@ -43,4 +43,7 @@ public class Post {
 		this.author = author;
 		this.publishDate = publishDate;
 	}
+	public int getLikes() {
+		return likedByUsers.size() - dislikedByUsers.size();
+	}
 }

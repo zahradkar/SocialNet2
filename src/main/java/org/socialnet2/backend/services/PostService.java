@@ -2,10 +2,12 @@ package org.socialnet2.backend.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.socialnet2.backend.dtos.PostRequestDTO;
+import org.socialnet2.backend.dtos.VoteResponseDTO;
 import org.socialnet2.backend.entities.Post;
-import org.socialnet2.backend.dtos.PostDTO;
 import org.socialnet2.backend.repositories.PostRepository;
 import org.socialnet2.backend.repositories.UserRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,16 +39,16 @@ public class PostService {
 		postRepository.deleteById(id);
 	}*/
 
-	public void create(PostDTO data, String email) {
+	public long create(PostRequestDTO data, String email) {
 		logger.debug(data.content());
 		var user = userRepository.getReferenceById(email); // TODO test if user never is null
-		postRepository.save(new Post(user, data.content(), data.date()));// todo add things from data accordingly
-
+		var post = postRepository.save(new Post(user, data.content(), data.date()));// todo add things from data accordingly
+		return post.getId();
 //		new PostResponseDTO(post.getId(), post.getTitle(), post.getContent(), getAuthor(user), post.getCreatedAt(), post.getLikes(), user.getProfilePictureURL());
 	}
 
 	public List<Post> readAll() {
-		return  postRepository.findAll();
+		return postRepository.findAll();
 	}
 
 	/*public Post update(UpdatedPostDTO post, long userId) {
@@ -71,11 +73,11 @@ public class PostService {
 
 		logger.info("Returning liked and disliked posts!");
 		return new VotesResponseDTO(likes, dislikes);
-	}
+	}*/
 
-	public VoteResponseDTO upvote(long postId, String username) throws PostNotFoundException {
-		var post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("post " + postId + " was not found!"));
-		var user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Error - unable to upvote, voting user not found!"));
+	public VoteResponseDTO upvote(long postId, String userId) {
+		var post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("post " + postId + " was not found!"));
+		var user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Error - unable to upvote, voting user not found!"));
 
 		if (post.getLikedByUsers().contains(user)) {
 			post.getLikedByUsers().remove(user);
@@ -88,9 +90,9 @@ public class PostService {
 		return new VoteResponseDTO(post.getLikes(), "Voted!", true);
 	}
 
-	public VoteResponseDTO downvote(long postId, String username) throws PostNotFoundException {
-		var post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("post " + postId + " was not found!"));
-		var user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Error - unable to upvote, voting user not found!"));
+	public VoteResponseDTO downvote(long postId, String userId) {
+		var post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("post " + postId + " was not found!"));
+		var user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Error - unable to upvote, voting user not found!"));
 
 		if (post.getDislikedByUsers().contains(user)) {
 			post.getDislikedByUsers().remove(user);
@@ -101,5 +103,5 @@ public class PostService {
 
 		postRepository.save(post);
 		return new VoteResponseDTO(post.getLikes(), "Down voted!", true);
-	}*/
+	}
 }

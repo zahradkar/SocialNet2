@@ -5,7 +5,7 @@ import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import org.socialnet2.backend.dtos.PostDTO;
+import org.socialnet2.backend.dtos.PostRequestDTO;
 import org.socialnet2.backend.entities.Post;
 import org.socialnet2.ui.containers.components.MediaObject;
 import org.socialnet2.ui.containers.components.PostCreate;
@@ -53,7 +53,7 @@ public class MainContainer extends Composite<HorizontalLayout> {
 			localDate = Instant.ofEpochMilli(post.getCreatedAt()).atZone(ZoneId.systemDefault()).toLocalDate();
 			likes = post.getLikedByUsers().size() - post.getDislikedByUsers().size();
 			name = post.getAuthor().getFirstName() + " " + post.getAuthor().getLastName();
-			mainColumn.add(new MediaObject(new PostDTO(post.getAuthor().getProfilePictureURL(), name, localDate, post.getContent(), likes + "", "0", "0"))); // todo update comment and share values
+			mainColumn.add(new MediaObject(new PostRequestDTO(post.getAuthor().getProfilePictureURL(), name, localDate, post.getContent(), likes + "", "0", "0"), post.getId())); // todo update comment and share values
 		}
 		mainColumn.add(new PresentationPostsView());
 
