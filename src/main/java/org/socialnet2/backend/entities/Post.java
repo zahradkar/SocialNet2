@@ -21,7 +21,7 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String content;
-	private LocalDate publishDate;
+	private LocalDate publishDate; // todo delete - use createdAt instead
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "author_id")
 	private User author;
@@ -43,6 +43,7 @@ public class Post {
 		this.author = author;
 		this.publishDate = publishDate;
 	}
+
 	public int getLikes() {
 		return likedByUsers.size() - dislikedByUsers.size();
 	}

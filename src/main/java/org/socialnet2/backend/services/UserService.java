@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,9 +47,13 @@ public class UserService implements UserDetailsService {
 		logger.info("User with e-mail " + email + " stored in the database!");
 	}
 
-	public UserResponseDTO readUser(String email) {
-		var user =  userRepository.findById(email).orElseThrow(() -> new IllegalArgumentException("User with e-mail " + email + " not found!"));
-		return new UserResponseDTO(user.getCreatedAt(),user.getFirstName(), user.getLastName(), user.getProfilePictureURL(), user.getBirthday(),user.getLocation(),user.getUpdatedAt());
+	public UserResponseDTO getUserDTO(String email) {
+		var user = userRepository.findById(email).orElseThrow(() -> new IllegalArgumentException("User with e-mail " + email + " not found!"));
+		return new UserResponseDTO(user.getCreatedAt(), user.getFirstName(), user.getLastName(), user.getProfilePictureURL(), user.getBirthday(), user.getLocation(), user.getUpdatedAt());
+	}
+
+	public User getUserEntity(String userId) {
+		return userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User with e-mail " + userId + " not found!"));
 	}
 
 	public void update(String firstName, String lastName, String email, String pictureURL, LocalDate birthday, String location) {

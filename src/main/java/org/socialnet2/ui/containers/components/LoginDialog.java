@@ -11,7 +11,6 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.server.VaadinSession;
 import org.socialnet2.backend.security.SecurityUtils;
-import org.socialnet2.ui.containers.Header;
 import org.socialnet2.ui.views.MainView;
 import org.socialnet2.ui.views.register.RegistrationForm;
 import org.socialnet2.ui.views.register.RegistrationFormBinder;
@@ -71,7 +70,7 @@ public class LoginDialog extends Dialog implements BeforeEnterObserver, Componen
 	}
 
 	private void loadUserData(String userId) {
-		var user = MainView.userService.readUser(userId);
+		var user = MainView.userService.getUserDTO(userId);
 		var session = VaadinSession.getCurrent();
 		session.setAttribute(UserInfoForm.USER, userId);
 		session.setAttribute(UserInfoForm.FIRST_NAME, user.firstName());

@@ -8,18 +8,19 @@ import lombok.Getter;
 
 @Getter
 public abstract class MediaObjectOptions extends HorizontalLayout {
-	private Button btn1;
-	private Button btn2;
-	private Span countSpan;
+	// this class is template of bottom part of Media Object (vote component, comment component, shares component)
+	private Button btnPrimary;
+	private Button btnSecondary;
+	private Span spanCount;
 
 	protected MediaObjectOptions(Icon icon1, Icon icon2, String votes) {
 		initialize(icon1, votes);
 
 		icon2.addClassName("media-object__icon");
-		btn2 = new Button(icon2);
-		btn2.addClassName("media-object__button");
+		btnSecondary = new Button(icon2);
+		btnSecondary.addClassName("media-object__button");
 
-		add(btn2);
+		add(btnSecondary);
 	}
 
 	protected MediaObjectOptions(Icon icon1, String number) {
@@ -28,15 +29,15 @@ public abstract class MediaObjectOptions extends HorizontalLayout {
 
 	private void initialize(Icon icon1, String number) {
 		icon1.addClassName("media-object__icon");
-		btn1 = new Button(icon1);
-		btn1.addClassName("media-object__button");
+		btnPrimary = new Button(icon1);
+		btnPrimary.addClassName("media-object__button");
 
-		countSpan = new Span(number);
-		countSpan.addClassName("likes"); // I don't like this
+		spanCount = new Span(number);
+		spanCount.addClassName("likes"); // I don't like this
 
 		setAlignItems(Alignment.CENTER);
 		addClassName("media-object__options");
-		add(btn1, countSpan);
+		add(btnPrimary, spanCount);
 	}
 
 }

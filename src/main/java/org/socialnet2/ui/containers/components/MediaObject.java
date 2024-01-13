@@ -86,31 +86,41 @@ public class MediaObject extends HorizontalLayout {
 
 		if (postId != null) {
 			postIdSpan.setText(postId.toString());
-//			postIdSpan.setVisible(false);
+			postIdSpan.setVisible(false);
 			actions.add(postIdSpan);
 		}
 
-		vote.getBtn1().addClickListener(buttonClickEvent -> {
-			//It seems to be working properly. Consider todo more tests
+		vote.getBtnPrimary().addClickListener(buttonClickEvent -> {
+			// processing of upvote
+			// todo more tests
 			var user = VaadinSession.getCurrent().getAttribute(UserInfoForm.USER);
 			if (user == null)
 				new LoginDialog().open();
 			else {
 				var response = MainView.postService.upvote(Long.parseLong(postIdSpan.getText()), user.toString());
 				Notification.show(response.result());
-				vote.getCountSpan().setText(response.votes() + "");
+				vote.getSpanCount().setText(response.votes() + "");
+				if (vote.getBtnPrimary().getIcon().getClassName().contains("green-icon"))
+					vote.getBtnPrimary().getIcon().removeClassName("green-icon");
+				else
+					vote.getBtnPrimary().getIcon().addClassName("green-icon");
 			}
 		});
 
-		vote.getBtn2().addClickListener(buttonClickEvent -> {
+		vote.getBtnSecondary().addClickListener(buttonClickEvent -> {
+			// processing of downvote
 			//It seems to be working properly. Consider todo more tests
 			var user = VaadinSession.getCurrent().getAttribute(UserInfoForm.USER);
 			if (user == null)
 				new LoginDialog().open();
 			else {
-				var response = MainView.postService.downvote(Long.parseLong(postIdSpan.getText()), user.toString());
-				Notification.show(response.result());
-				vote.getCountSpan().setText(response.votes() + "");
+				var response = MainView.postService.downvote(Long.parseLong(postIdSpan.getText()), user.toString()); // sends data do DB and receives the response
+				Notification.show(response.result()); // displays result
+				vote.getSpanCount().setText(response.votes() + ""); // updates count of votes
+				if (vote.getBtnSecondary().getIcon().getClassName().contains("red-icon"))
+					vote.getBtnSecondary().getIcon().removeClassName("red-icon");
+				else
+					vote.getBtnSecondary().getIcon().addClassName("red-icon");
 			}
 		});
 		//-----------------------------
