@@ -31,9 +31,6 @@ public class PostNew extends Dialog {
 		foot.setJustifyContentMode(FlexComponent.JustifyContentMode.END); // todo fix: this does not work :(
 
 		if (!VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString().isEmpty()) {
-			// todo fix loading image (does not work)
-			logger.info("Profile picture found - using:" + VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString());
-			logger.info("profilePictureURL.length(): " + VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString().length());
 			var profilePicture = new Image(VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString(), "profile picture");
 			profilePicture.setHeight("var(--lumo-size-l)");
 			profilePicture.setWidth("var(--lumo-size-l)");
@@ -83,7 +80,7 @@ public class PostNew extends Dialog {
 	}
 
 	private void displayOnScreen(PostRequestDTO data, long postId) {
-		MainContainer.instance.addToMainColumn(new MediaObject(data, postId));
+		MainColumn.instance.addComponentAtIndex(1, new MediaObject(data, postId));
 		Notification.show("Published!");
 	}
 }

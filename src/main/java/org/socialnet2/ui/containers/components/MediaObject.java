@@ -8,13 +8,18 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
+import lombok.Getter;
 import org.socialnet2.backend.dtos.PostRequestDTO;
 import org.socialnet2.ui.views.MainView;
 
 import java.time.format.DateTimeFormatter;
 
 public class MediaObject extends HorizontalLayout {
-	private Span postIdSpan = new Span();
+	private final Span postIdSpan = new Span();
+	@Getter
+	private VotesComponent votesComponent;
+	private CommentComponent commentComponent;
+	private SharesComponent sharesComponent;
 
 	public MediaObject(PostRequestDTO postRequestDTO, long postId) {
 		initialize(postRequestDTO, postId);
@@ -78,11 +83,11 @@ public class MediaObject extends HorizontalLayout {
 		shares.addClassName("shares");
 
 		//----------------------
-		var vote = new VotesComponent(VaadinIcon.THUMBS_UP.create(), VaadinIcon.THUMBS_DOWN.create(), postRequestDTO.likes());
-		var comment = new CommentComponent(VaadinIcon.COMMENT.create(), postRequestDTO.comments());
-		var share = new SharesComponent(VaadinIcon.CONNECT.create(), postRequestDTO.shares());
+		votesComponent = new VotesComponent(VaadinIcon.THUMBS_UP.create(), VaadinIcon.THUMBS_DOWN.create(), postRequestDTO.likes());
+		commentComponent = new CommentComponent(VaadinIcon.COMMENT.create(), postRequestDTO.comments());
+		sharesComponent = new SharesComponent(VaadinIcon.CONNECT.create(), postRequestDTO.shares());
 
-		actions.add(vote, comment, share);
+		actions.add(votesComponent, commentComponent, sharesComponent);
 
 		if (postId != null) {
 			postIdSpan.setText(postId.toString());
@@ -90,7 +95,7 @@ public class MediaObject extends HorizontalLayout {
 			actions.add(postIdSpan);
 		}
 
-		vote.getBtnPrimary().addClickListener(buttonClickEvent -> {
+		votesComponent.getBtnPrimary().addClickListener(buttonClickEvent -> {
 			// processing of upvote
 			// todo more tests
 			var user = VaadinSession.getCurrent().getAttribute(UserInfoForm.USER);
@@ -99,15 +104,15 @@ public class MediaObject extends HorizontalLayout {
 			else {
 				var response = MainView.postService.upvote(Long.parseLong(postIdSpan.getText()), user.toString());
 				Notification.show(response.result());
-				vote.getSpanCount().setText(response.votes() + "");
-				if (vote.getBtnPrimary().getIcon().getClassName().contains("green-icon"))
-					vote.getBtnPrimary().getIcon().removeClassName("green-icon");
+				votesComponent.getSpanCount().setText(response.votes() + "");
+				if (votesComponent.getBtnPrimary().getIcon().getClassName().contains("thumbup-green"))
+					votesComponent.getBtnPrimary().getIcon().removeClassName("thumbup-green");
 				else
-					vote.getBtnPrimary().getIcon().addClassName("green-icon");
+					votesComponent.getBtnPrimary().getIcon().addClassName("thumbup-green");
 			}
 		});
 
-		vote.getBtnSecondary().addClickListener(buttonClickEvent -> {
+		votesComponent.getBtnSecondary().addClickListener(buttonClickEvent -> {
 			// processing of downvote
 			//It seems to be working properly. Consider todo more tests
 			var user = VaadinSession.getCurrent().getAttribute(UserInfoForm.USER);
@@ -116,11 +121,11 @@ public class MediaObject extends HorizontalLayout {
 			else {
 				var response = MainView.postService.downvote(Long.parseLong(postIdSpan.getText()), user.toString()); // sends data do DB and receives the response
 				Notification.show(response.result()); // displays result
-				vote.getSpanCount().setText(response.votes() + ""); // updates count of votes
-				if (vote.getBtnSecondary().getIcon().getClassName().contains("red-icon"))
-					vote.getBtnSecondary().getIcon().removeClassName("red-icon");
+				votesComponent.getSpanCount().setText(response.votes() + ""); // updates count of votes
+				if (votesComponent.getBtnSecondary().getIcon().getClassName().contains("thumbdown-red"))
+					votesComponent.getBtnSecondary().getIcon().removeClassName("thumbdown-red");
 				else
-					vote.getBtnSecondary().getIcon().addClassName("red-icon");
+					votesComponent.getBtnSecondary().getIcon().addClassName("thumbdown-red");
 			}
 		});
 		//-----------------------------
