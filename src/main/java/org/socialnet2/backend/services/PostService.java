@@ -59,10 +59,10 @@ public class PostService {
 	public List<Post> getAllPostOfAUser(long userId) {
 		// TODO everything
 		return null;
-	}
+	}*/
 
-	public VotesResponseDTO getUserVotes(String username) {
-		var user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username + " not found!"));
+	/*public UserVotesRespDTO getUsersVotes(String userId) { // > get votes of a user
+		var user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException(userId + " not found!"));
 		List<Long> likes = new ArrayList<>();
 		for (int i = 0; i < user.getLikedPosts().size(); i++)
 			likes.add(user.getLikedPosts().get(i).getId());
@@ -71,8 +71,14 @@ public class PostService {
 		for (int i = 0; i < user.getDislikedPosts().size(); i++)
 			dislikes.add(user.getDislikedPosts().get(i).getId());
 
+		logger.info("Returning IDs of liked and disliked posts!");
+		return new UserVotesRespDTO(likes, dislikes);
+	}
+
+	public UserVotesRespDTO2 getUsersVotes2(String userId) { // > get votes of a user
+		var user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException(userId + " not found!"));
 		logger.info("Returning liked and disliked posts!");
-		return new VotesResponseDTO(likes, dislikes);
+		return new UserVotesRespDTO2(user.getLikedPosts(), user.getDislikedPosts());
 	}*/
 
 	public VoteResponseDTO upvote(long postId, String userId) {

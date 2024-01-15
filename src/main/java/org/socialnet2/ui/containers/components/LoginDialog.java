@@ -10,6 +10,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.server.VaadinSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.socialnet2.backend.security.SecurityUtils;
 import org.socialnet2.ui.views.MainView;
 import org.socialnet2.ui.views.register.RegistrationForm;
@@ -17,6 +19,7 @@ import org.socialnet2.ui.views.register.RegistrationFormBinder;
 
 public class LoginDialog extends Dialog implements BeforeEnterObserver, ComponentEventListener<AbstractLogin.LoginEvent> {
 	private static final String LOGIN_SUCCESS_URL = "/";
+	private static final Logger logger = LoggerFactory.getLogger(LoginDialog.class);
 	private LoginForm loginForm;
 
 	public LoginDialog() {
@@ -70,6 +73,7 @@ public class LoginDialog extends Dialog implements BeforeEnterObserver, Componen
 	}
 
 	private void loadUserData(String userId) {
+		// todo update retrieving user from DB (in this method user is retrieved twice - update to retrieve it just once)
 		var user = MainView.userService.getUserDTO(userId);
 		var session = VaadinSession.getCurrent();
 		session.setAttribute(UserInfoForm.USER, userId);
@@ -78,6 +82,25 @@ public class LoginDialog extends Dialog implements BeforeEnterObserver, Componen
 		session.setAttribute(UserInfoForm.PROFILE_PICTURE, user.profilePictureURL());
 		session.setAttribute(UserInfoForm.BIRTHDAY, user.birthday());
 		session.setAttribute(UserInfoForm.LOCATION, user.location());
+
+		// code below loads colors of vote icons after successful login
+		int offset = 0;
+		if (MainColumn.instance.getComponentAt(MainColumn.instance.getComponentCount() - 1) instanceof PresentationPostsView) // checks if at the bottom of main column is added PresentationPostsView
+			offset = 1; // offset is 1 if there is PresentationPostsView added in main column else 0
+		int index = MainColumn.instance.getLoadedPostsFromDB().size();
+		var user1 = MainView.userService.getUserEntity(userId);
+//		logger.info("count of loaded posts: " + MainColumn.instance.getLoadedPostsFromDB().size());
+//		logger.info("component count: " + MainColumn.instance.getComponentCount());
+		for (int i = 1; i < MainColumn.instance.getComponentCount() - offset; i++) {
+			var postBackend = MainColumn.instance.getLoadedPostsFromDB().get(--index);
+			var postFrontend = (MediaObject) MainColumn.instance.getComponentAt(i);
+//			logger.info(postBackend.getId() + "");
+//			logger.info(MainColumn.instance.getComponentAt(i).getClass().getName());
+			if (postBackend.getDislikedByUsers().contains(user1))
+				postFrontend.getVotesComponent().getBtnSecondary().getIcon().addClassName("thumbdown-red");
+			if (postBackend.getLikedByUsers().contains(user1))
+				postFrontend.getVotesComponent().getBtnPrimary().getIcon().addClassName("thumbup-green");
+		}
 	}
 
 	@Override

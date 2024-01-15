@@ -2,8 +2,10 @@ package org.socialnet2.ui.containers.components;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
+import lombok.Getter;
 import org.socialnet2.backend.dtos.PostRequestDTO;
 import org.socialnet2.backend.entities.Post;
+import org.socialnet2.backend.entities.User;
 import org.socialnet2.ui.views.MainView;
 
 import java.time.Instant;
@@ -13,6 +15,7 @@ import java.util.List;
 public class MainColumn extends VerticalLayout {
 	// the only creation of the instance is in MainContainer; use MainColumn.instance elsewhere
 	public static MainColumn instance;
+	@Getter
 	private List<Post> loadedPostsFromDB;
 
 	public MainColumn() {
@@ -36,7 +39,7 @@ public class MainColumn extends VerticalLayout {
 
 				// below: loading colors of vote icons at loading page
 				// todo load colors of vote icons even after login
-				var user = MainView.userService.getUserEntity(VaadinSession.getCurrent().getAttribute(UserInfoForm.USER).toString());
+				User user = MainView.userService.getUserEntity(VaadinSession.getCurrent().getAttribute(UserInfoForm.USER).toString());
 				if (post.getDislikedByUsers().contains(user))
 					mediaObject.getVotesComponent().getBtnSecondary().getIcon().addClassName("thumbdown-red");
 				if (post.getLikedByUsers().contains(user))
