@@ -35,17 +35,3 @@ public class PostCreate extends HorizontalLayout {
 		add(addPostBtn);
 	}
 }
-
-
-/*
-    <div id="temp-container" style="background: tomato">
-      <div class="create-post">
-        <picture>
-          <source srcset="images/martin-50px.webp 1x, images/martin-100px.webp 2x, images/martin-200px.webp 3x"
-                  type="image/webp">
-          <img alt="martin's profile photo" class="profile-photo" src="images/martin-200px.jpg"/>
-        </picture>
-        <button class="create-post__input check-login">Post...</button>
-      </div>
-    </div>
-*/

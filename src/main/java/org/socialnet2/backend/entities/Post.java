@@ -37,11 +37,22 @@ public class Post {
 	private List<User> dislikedByUsers = new ArrayList<>();
 	@Column(name = "updated_at", columnDefinition = "BIGINT UNSIGNED")
 	private long updatedAt; // TODO somehow improve long -> unsigned long
+	private String PageImage;
+	private String PageTitle;
+	private String PageDescription;
 
 	public Post(User author, String content, LocalDate publishDate) {
 		this.content = content;
 		this.author = author;
 		this.publishDate = publishDate;
+	}
+
+	public Post(User author, String content, String pageImage, String pageTitle, String pageDescription) {
+		this.author = author;
+		this.content = content;
+		PageImage = pageImage;
+		PageTitle = pageTitle;
+		PageDescription = pageDescription;
 	}
 
 	public int getLikes() {

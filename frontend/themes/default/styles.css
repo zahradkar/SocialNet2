@@ -40,6 +40,7 @@ html {
 }
 
 vaadin-text-area{
+  /*todo somehow disable hover effect*/
   --vaadin-input-field-background: white;
   /*--vaadin-input-field-invalid-background: white;*/
   /*--vaadin-input-field-hover-highlight: white;*/
