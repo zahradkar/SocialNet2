@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PresentationPostsView extends Div {
-	public static List<PostRequestDTO> postData = Arrays.asList( //
+	/*private final List<PostRequestDTO> postData = Arrays.asList( //
 			new PostRequestDTO("https://randomuser.me/api/portraits/men/42.jpg", "John Smith", LocalDate.of(2020, 5, 10),
 					"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis deserunt fugit mollitia officiis praesentium quibusdam quo reprehenderit sint. A aliquam aperiam at consequatur incidunt nisi possimus provident quaerat vitae voluptatem. Aut, autem dolorem in libero numquam odit pariatur quae tempore?",
 					"10K", "22", "11"),
@@ -47,14 +47,14 @@ public class PresentationPostsView extends Div {
 					"In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
 					"1K", "500", "20")
 
-	);
+	);*/
 
 	public PresentationPostsView() {
 		addClassName("posts-view");
 
-		for (PostRequestDTO postRequestDTO : PresentationPostsView.postData) {
-			HorizontalLayout card = new MediaObject(postRequestDTO);
-			add(card);
-		}
+//		for (PostRequestDTO postRequestDTO : PresentationPostsView.postData) {
+//			HorizontalLayout card = new MediaObject(postRequestDTO);
+//			add(card);
+//		}
 	}
 }

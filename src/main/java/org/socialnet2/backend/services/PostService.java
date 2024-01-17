@@ -39,16 +39,20 @@ public class PostService {
 		postRepository.deleteById(id);
 	}*/
 
-	public long create(PostRequestDTO data, String email) {
-		logger.debug(data.content());
-		var user = userRepository.getReferenceById(email); // TODO test if user never is null
-		var post = postRepository.save(new Post(user, data.content(), data.date()));// todo add things from data accordingly
-		return post.getId();
-//		new PostResponseDTO(post.getId(), post.getTitle(), post.getContent(), getAuthor(user), post.getCreatedAt(), post.getLikes(), user.getProfilePictureURL());
+	public Post create(PostRequestDTO data, String email) {
+		// todo test
+		var user = userRepository.findById(email).orElseThrow(() -> new UsernameNotFoundException("user with " + email + " not found!")); // must be findById()
+		return postRepository.save(new Post(user, data.content(), data.previewImageURL(), data.previewTitle(), data.previewDescription()));
+//		return new PostResponseDTO(post.getCreatedAt(), post.getId() + "", post.getContent(), post.getAuthor(), post.getLikes() + "", "0", "0", post.getUpdatedAt(), post.getPreviewImageURL(), post.getPreviewTitle(), post.getPreviewDescription());// todo update comments and shares
 	}
 
 	public List<Post> readAll() {
 		return postRepository.findAll();
+//		List<Post> posts = postRepository.findAll();
+//		List<PostResponseDTO> responses = new ArrayList<>();
+//		for (int i = 0; i < posts.size(); i++)
+//			responses.add(new PostResponseDTO(posts.get(i).getCreatedAt(), posts.get(i).getId() + "", posts.get(i).getContent(), posts.get(i).getAuthor(), posts.get(i).getLikes() + "", "0","0",posts.get(i).getUpdatedAt(),posts.get(i).getPreviewImageURL(),posts.get(i).getPreviewTitle(),posts.get(i).getPreviewDescription()));
+//		return responses;
 	}
 
 	/*public Post update(UpdatedPostDTO post, long userId) {

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,6 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String content;
-	private LocalDate publishDate; // todo delete - use createdAt instead
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "author_id")
 	private User author;
@@ -37,22 +35,16 @@ public class Post {
 	private List<User> dislikedByUsers = new ArrayList<>();
 	@Column(name = "updated_at", columnDefinition = "BIGINT UNSIGNED")
 	private long updatedAt; // TODO somehow improve long -> unsigned long
-	private String PageImage;
-	private String PageTitle;
-	private String PageDescription;
+	private String previewImageURL = "";
+	private String previewTitle = "";
+	private String previewDescription = "";
 
-	public Post(User author, String content, LocalDate publishDate) {
-		this.content = content;
-		this.author = author;
-		this.publishDate = publishDate;
-	}
-
-	public Post(User author, String content, String pageImage, String pageTitle, String pageDescription) {
+	public Post(User author, String content, String previewImageURL, String previewTitle, String previewDescription) {
 		this.author = author;
 		this.content = content;
-		PageImage = pageImage;
-		PageTitle = pageTitle;
-		PageDescription = pageDescription;
+		this.previewImageURL = previewImageURL;
+		this.previewTitle = previewTitle;
+		this.previewDescription = previewDescription;
 	}
 
 	public int getLikes() {

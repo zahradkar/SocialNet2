@@ -3,13 +3,10 @@ package org.socialnet2.ui.containers.components;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
 import lombok.Getter;
-import org.socialnet2.backend.dtos.PostRequestDTO;
 import org.socialnet2.backend.entities.Post;
 import org.socialnet2.backend.entities.User;
 import org.socialnet2.ui.views.MainView;
 
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.List;
 
 public class MainColumn extends VerticalLayout {
@@ -22,7 +19,7 @@ public class MainColumn extends VerticalLayout {
 		setWidth("100%");
 		add(new PostCreate());
 		getPostsToFrontend();
-		add(new PresentationPostsView());
+//		add(new PresentationPostsView());
 		instance = this;
 	}
 
@@ -50,9 +47,10 @@ public class MainColumn extends VerticalLayout {
 	}
 
 	private MediaObject createPostFrontend(Post post) {
-		var localDate = Instant.ofEpochMilli(post.getCreatedAt()).atZone(ZoneId.systemDefault()).toLocalDate();
-		var likes = post.getLikedByUsers().size() - post.getDislikedByUsers().size();
-		var name = post.getAuthor().getFirstName() + " " + post.getAuthor().getLastName();
-		return new MediaObject(new PostRequestDTO(post.getAuthor().getProfilePictureURL(), name, localDate, post.getContent(), likes + "", "0", "0"), post.getId());// todo update comment and share values
+//		var localDate = Instant.ofEpochMilli(post.getCreatedAt()).atZone(ZoneId.systemDefault()).toLocalDate();
+//		var likes = post.getLikedByUsers().size() - post.getDislikedByUsers().size();
+//		var name = post.getAuthor().getFirstName() + " " + post.getAuthor().getLastName();
+		return new MediaObject(post);
+//		return new MediaObject(new PostResponseDTO(post.getAuthor().getProfilePictureURL(), name, localDate, post.getContent(), likes + "", "0", "0"), post.getId());// todo update comment and share values
 	}
 }

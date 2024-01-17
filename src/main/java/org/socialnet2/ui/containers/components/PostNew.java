@@ -14,15 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.socialnet2.backend.dtos.PostRequestDTO;
 import org.socialnet2.backend.dtos.ScraperResponseDTO;
+import org.socialnet2.backend.entities.Post;
 import org.socialnet2.ui.views.MainView;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
-
-//import static jdk.internal.loader.URLClassPath.checkURL;
 
 public class PostNew extends Dialog {
 	// TODO tune
@@ -64,7 +62,7 @@ public class PostNew extends Dialog {
 		this.content.setWidth("400px");
 		this.content.setHeight("200px"); // TODO calculate accordingly and apply responsive design
 
-		var publishBtn = getButton(nameSpan.getText());
+		var publishBtn = getButton();
 
 //		head.addComponentAsFirst(Objects.requireNonNullElse(profilePicture, icon)); // wau
 		head.add(nameSpan);
@@ -75,7 +73,7 @@ public class PostNew extends Dialog {
 		add(content);
 	}
 
-	private Button getButton(String name) {
+	private Button getButton() {
 		var publishBtn = new Button("Publish...");
 		publishBtn.addClickListener(buttonClickEvent -> {
 			if (content.getValue().isEmpty()) {
@@ -83,14 +81,12 @@ public class PostNew extends Dialog {
 				return;
 			}
 
-			var postData = new PostRequestDTO(VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString(), name, LocalDate.now(), content.getValue(), "0", "0", "0"); // todo complete
-//			var postData = new PostCreateReqDTO(VaadinSession.getCurrent().getAttribute(UserInfoForm.PROFILE_PICTURE).toString(), name, content.getValue(), preview.PageImage.getSrc(), preview.PageTitle.getText(), preview.PageDescription.getText());
+			var postData = new PostRequestDTO(content.getValue(), preview.image.getSrc(), preview.titleSpn.getText(), preview.descriptionSpn.getText());
 
 			var user = VaadinSession.getCurrent().getAttribute(UserInfoForm.USER);
 			if (user != null) {
 				// todo test
-				var postId = MainView.postService.create(postData, user.toString()); // storing to DB; returns postId
-				displayOnScreen(postData, postId);
+				displayOnScreen(MainView.postService.create(postData, user.toString())); // storing to DB; returns Post entity
 				this.close();
 			} else
 				Notification.show("You are not logged in!");
@@ -98,8 +94,8 @@ public class PostNew extends Dialog {
 		return publishBtn;
 	}
 
-	private void displayOnScreen(PostRequestDTO data, long postId) {
-		MainColumn.instance.addComponentAtIndex(1, new MediaObject(data, postId));
+	private void displayOnScreen(Post post) {
+		MainColumn.instance.addComponentAtIndex(1, new MediaObject(post));
 		Notification.show("Published!");
 	}
 
@@ -159,34 +155,34 @@ public class PostNew extends Dialog {
 	}
 
 	private class Preview extends VerticalLayout {
-		private final Image PageImage = new Image();
-		private final Span PageTitle = new Span();
-		private final Span PageDescription = new Span();
+		private final Image image = new Image();
+		private final Span titleSpn = new Span();
+		private final Span descriptionSpn = new Span();
 
 		public Preview() {
 			setPadding(false);
 //			setMaxWidth("400px");
-			PageImage.setMaxWidth("400px"); // todo tune
-			PageImage.setMaxHeight("300px");
-			PageImage.setAlt("URLs presentation picture");
-			PageTitle.getStyle().setFontWeight("bold");
-			PageTitle.setMaxWidth("400px");
-			PageDescription.setMaxWidth("400px");// todo tune
+			image.setMaxWidth("400px"); // todo tune
+			image.setMaxHeight("300px");
+			image.setAlt("URLs presentation picture");
+			titleSpn.getStyle().setFontWeight("bold");
+			titleSpn.setMaxWidth("400px");
+			descriptionSpn.setMaxWidth("400px");// todo tune
 		}
 
 		public void createPreview(ScraperResponseDTO webPageURL) {
 			// todo add to preview close button
 			if (body.getComponentCount() > 1)
 				body.remove(body.getComponentAt(1));
-			PageImage.setSrc(webPageURL.image());
-			PageTitle.setText(webPageURL.title());
-			PageDescription.setText(webPageURL.description());
-			if (!PageImage.getSrc().isEmpty())
-				add(PageImage);
-			if (!PageTitle.getText().isEmpty())
-				add(PageTitle);
-			if (!PageDescription.getText().isEmpty())
-				add(PageDescription);
+			image.setSrc(webPageURL.image());
+			titleSpn.setText(webPageURL.title());
+			descriptionSpn.setText(webPageURL.description());
+			if (!image.getSrc().isEmpty())
+				add(image);
+			if (!titleSpn.getText().isEmpty())
+				add(titleSpn);
+			if (!descriptionSpn.getText().isEmpty())
+				add(descriptionSpn);
 			body.add(this);
 			content.setHeight("min-content");
 		}
