@@ -9,6 +9,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
 import lombok.Getter;
+import org.socialnet2.backend.dtos.PostDemoDTO;
+import org.socialnet2.backend.dtos.PostRequestDTO;
 import org.socialnet2.backend.entities.Post;
 import org.socialnet2.ui.views.MainView;
 
@@ -21,9 +23,9 @@ public class MediaObject extends VerticalLayout {
 	private CommentComponent commentComponent;
 	private SharesComponent sharesComponent;
 
-	/*public MediaObject(PostRequestDTO postRequestDTO) {
-		initialize(postRequestDTO);
-	}*/
+	public MediaObject(PostDemoDTO dto) {
+		initialize(dto);
+	}
 
 	public MediaObject(Post data) {
 		setPadding(false);
@@ -157,13 +159,13 @@ public class MediaObject extends VerticalLayout {
 		add(card);
 	}
 
-	/*private void initialize(PostRequestDTO postRequestDTO, Long postId) {
+	private void initialize(PostDemoDTO dto) {
 		// TODO CONSIDER NOT USING THIS METHOD
 		addClassName("card");
 		setSpacing(false);
 		getThemeList().add("spacing-s");
 
-		Image image = new Image(postRequestDTO.profileImageURL(), "profile picture");
+		Image image = new Image(dto.profileImageURL(), "profile picture");
 
 		VerticalLayout description = new VerticalLayout();
 		description.addClassName("description");
@@ -175,16 +177,16 @@ public class MediaObject extends VerticalLayout {
 		header.setSpacing(false);
 		header.getThemeList().add("spacing-s");
 
-		Span name = new Span(postRequestDTO.name());
+		Span name = new Span(dto.name());
 		name.addClassName("name");
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EE d LLL. yyyy");
-		Span date = new Span(postRequestDTO.date().format(formatter)); // todo thing about localization formatting
+		Span date = new Span(dto.date().format(formatter)); // todo thing about localization formatting
 		date.addClassName("date");
 
 		header.add(name, date);
 
-		Span post = new Span(postRequestDTO.content());
+		Span post = new Span(dto.content());
 		post.addClassName("post");
 
 		HorizontalLayout actions = new HorizontalLayout();
@@ -195,67 +197,31 @@ public class MediaObject extends VerticalLayout {
 		Icon likeIcon = VaadinIcon.HEART.create();
 		likeIcon.addClassName("icon");
 
-		Span likes = new Span(postRequestDTO.likes());
+		Span likes = new Span(dto.likes());
 		likes.addClassName("likes");
 
 		Icon commentIcon = VaadinIcon.COMMENT.create();
 		commentIcon.addClassName("icon");
 
-		Span comments = new Span(postRequestDTO.comments());
+		Span comments = new Span(dto.comments());
 		comments.addClassName("comments");
 
 		Icon shareIcon = VaadinIcon.CONNECT.create();
 		shareIcon.addClassName("icon");
 
-		Span shares = new Span(postRequestDTO.shares());
+		Span shares = new Span(dto.shares());
 		shares.addClassName("shares");
 
 		//----------------------
-		votesComponent = new VotesComponent(VaadinIcon.THUMBS_UP.create(), VaadinIcon.THUMBS_DOWN.create(), postRequestDTO.likes());
-		commentComponent = new CommentComponent(VaadinIcon.COMMENT.create(), postRequestDTO.comments());
-		sharesComponent = new SharesComponent(VaadinIcon.CONNECT.create(), postRequestDTO.shares());
+		votesComponent = new VotesComponent(VaadinIcon.THUMBS_UP.create(), VaadinIcon.THUMBS_DOWN.create(), dto.likes());
+		commentComponent = new CommentComponent(VaadinIcon.COMMENT.create(), dto.comments());
+		sharesComponent = new SharesComponent(VaadinIcon.CONNECT.create(), dto.shares());
 
 		actions.add(votesComponent, commentComponent, sharesComponent);
 
-		if (postId != null) {
-			postIdSpan.setText(postId.toString());
-			postIdSpan.setVisible(false);
-			actions.add(postIdSpan);
-		}
+		votesComponent.getBtnPrimary().addClickListener(buttonClickEvent -> Notification.show("This is demo post. Create a real one and test upvote there."));
 
-		votesComponent.getBtnPrimary().addClickListener(buttonClickEvent -> {
-			// processing of upvote
-			// todo more tests
-			var user = VaadinSession.getCurrent().getAttribute(UserInfoForm.USER);
-			if (user == null)
-				new LoginDialog().open();
-			else {
-				var response = MainView.postService.upvote(Long.parseLong(postIdSpan.getText()), user.toString());
-				Notification.show(response.result());
-				votesComponent.getSpanCount().setText(response.votes() + "");
-				if (votesComponent.getBtnPrimary().getIcon().getClassName().contains("thumbup-green"))
-					votesComponent.getBtnPrimary().getIcon().removeClassName("thumbup-green");
-				else
-					votesComponent.getBtnPrimary().getIcon().addClassName("thumbup-green");
-			}
-		});
-
-		votesComponent.getBtnSecondary().addClickListener(buttonClickEvent -> {
-			// processing of downvote
-			//It seems to be working properly. Consider todo more tests
-			var user = VaadinSession.getCurrent().getAttribute(UserInfoForm.USER);
-			if (user == null)
-				new LoginDialog().open();
-			else {
-				var response = MainView.postService.downvote(Long.parseLong(postIdSpan.getText()), user.toString()); // sends data do DB and receives the response
-				Notification.show(response.result()); // displays result
-				votesComponent.getSpanCount().setText(response.votes() + ""); // updates count of votes
-				if (votesComponent.getBtnSecondary().getIcon().getClassName().contains("thumbdown-red"))
-					votesComponent.getBtnSecondary().getIcon().removeClassName("thumbdown-red");
-				else
-					votesComponent.getBtnSecondary().getIcon().addClassName("thumbdown-red");
-			}
-		});
+		votesComponent.getBtnSecondary().addClickListener(buttonClickEvent -> Notification.show("This is demo post. Create a real one and test downvote there."));
 		//-----------------------------
 		description.add(header, post, actions);
 		UserIcon userIcon = new UserIcon();
@@ -267,5 +233,5 @@ public class MediaObject extends VerticalLayout {
 		}
 		add(description);
 
-	}*/
+	}
 }

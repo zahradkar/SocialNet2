@@ -19,7 +19,7 @@ public class MainColumn extends VerticalLayout {
 		setWidth("100%");
 		add(new PostCreate());
 		getPostsToFrontend();
-//		add(new PresentationPostsView());
+		add(new PresentationPostsView());
 		instance = this;
 	}
 
@@ -35,7 +35,6 @@ public class MainColumn extends VerticalLayout {
 				var mediaObject = createPostFrontend(post);
 
 				// below: loading colors of vote icons at loading page
-				// todo load colors of vote icons even after login
 				User user = MainView.userService.getUserEntity(VaadinSession.getCurrent().getAttribute(UserInfoForm.USER).toString());
 				if (post.getDislikedByUsers().contains(user))
 					mediaObject.getVotesComponent().getBtnSecondary().getIcon().addClassName("thumbdown-red");
